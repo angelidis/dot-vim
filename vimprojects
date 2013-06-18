@@ -1,0 +1,213 @@
+#17-jun-2011::laptop
+Ref-Alpha="/media/Lib2/Reference.Library/Archive-alphabetic" filter="*.rst"{
+ developer_tools[unix].rst
+ vim.rst
+ vim_install.rst
+ rails.rst
+ git.rst
+ vim_encodings_line_endings.rst
+ vim_rails.rst
+ vim_tips.rst
+}
+Ref-Lib="/media/Lib2/Reference.Library" {
+ 1.txt
+ Hard-library-reference.txt
+ Hardware-I-own.txt
+ Info.ico
+ desktop.ini
+ hardware-clock.txt
+ indesign.txt
+ latin-phrases.txt
+ wikipedia offline.txt
+}
+Ubuntu="/home/aggelidis/Ubuntu" {
+ 2do-linux.rst
+ 2do.rst
+ evolution-backup.tar.gz
+ how-to-build-git-from-source-on-ubuntu.rest
+ install_dev_tools
+ install_python
+ install_rails
+ install_rails_no_rvm
+ install_script
+ my-variables.sh
+ test_script.sh
+}
+bin="/home/aggelidis/bin" {
+ URXVT.xterm
+ ack
+ favs-add
+ favs-reset
+ favs-save
+ favs-status
+ mk.backup
+ mk.backup-vim
+ mk.backup.sample
+ mk.filetags-nr
+ mk.home-monitor-enable.sh
+ mk.kee
+ mk.radio.skai.sh
+ mk.tags-nr
+ mk.tv.skai.sh
+ mk.work-monitor-enable.sh
+ nr.test_connectivity.sh
+ script.xterm
+ search-files
+ search-gvim
+ search-gvim-no_break
+ search-gvim.orig
+ search-lines
+ start_test_station
+ title
+ torto
+ xterm-colortest
+ xterm.1
+ xterm.Simple
+ xterm.Simple.Unicode
+ xterm.Terminal.title.xterm
+ xterm.Terminal.xterm
+ xterm.Title.Colors.Dejavu
+ xterm.Title.bigfonts
+}
+dot-files="/home/aggelidis/Ubuntu/01.dot_files/dot_files" filter=".*" {
+ .bash_history
+ .bash_logout
+ .bash_profile
+ .bashrc
+ .favsrc
+ .favsrc.orig
+ .git-completion.bash
+ .gitconfig
+ .hgignore
+ .hgrc
+ .profile
+}
+vim="/home/aggelidis/.vim" filter="*.vim *.markdown"{
+ auto_commands.vim
+ customization.vim
+ experimental.vim
+ key_bindings.vim
+ matchings.vim
+ my_functions.vim
+ settings.vim
+ unix.vim
+ variables.vim
+ vim2do.markdown
+vim_themes="/home/aggelidis/.vim/colors" filter="*.vim"{
+  addon.vim
+  addon_signs.vim
+  agge_blacklight.vim
+  agge_desert.vim
+  agge_dual.vim
+  agge_molokai.vim
+  agge_oceandeep.vim
+  agge_xoria256.vim
+  bclear.vim
+  darktango.vim
+  dual.vim
+  emacs.vim
+  inkpot.vim
+  kalt.vim
+  kaltex.vim
+  kib_darktango.vim
+  lanzarotta.vim
+  maroloccio.vim
+  peaksea.vim
+  railscasts.vim
+  rdark.vim
+  synic.vim
+  tango.vim
+  term-comments.vim
+  vividchalk.vim
+  wombat.vim
+}
+vimfiles="/home/aggelidis/" filter="*.vim"{
+  .vimrc
+  .gvimrc
+}
+}
+investing="/home/aggelidis/Documents/investing" filter="*.rst"{
+ stocks.rst
+ jobs.rst
+}
+rails-depot="/home/aggelidis/projects/depot" filter="*.*"{
+ Gemfile.lock
+ config.ru
+}
+My Sample Project=~/c/project CD=. in=in.vim out=out.vim flags=r {
+ Makefile
+     in.vim
+     out.vim
+ GUI Files=. filter="gui*.c gui*.h" {
+  gui_window.c
+  gui_dialog.c
+  gui_list.c
+  gui.h	       # Header file
+ }
+ Database Files=. filter="data*.c data*.h" {
+  data_read.c
+  data_write.c
+  data.h
+ }
+ OS-Specific Files {
+  Win32=. filter="os_win32*.c os_win32*.h" {
+   os_win32_gui.c
+   os_win32_io.c
+  }
+  Unix=. filter="os_unix*.c os_unix*.h" {
+   os_unix_gui.c
+   os_unix_io.c
+  }
+ }
+}
+rubycode="/home/aggelidis/projects/rubycode" filter="*.*"{
+ c2f.rb
+ classes.rb
+ hello-world.rb
+ modules.rb
+ objects101.rb
+ readme.rst
+ referenceVSimmediate_values.rb
+}
+rails="~/projects/ruby_on_rails" filter="*.rst *.rb"  flags={
+ readme.rst
+ skeleton.rb
+sample_app="sample_app" CD="~/projects/ruby_on_rails/sample_app" filter="*" flags=s{
+  Gemfile
+  README
+  Rakefile
+  config.ru
+}
+}
+SQL="/home/aggelidis/SQL" filter="*.*"  flags={
+SQLtables="/home/aggelidis/SQL/HeadFirstSQLTables" filter="*.*"  flags={
+  boys.sql
+  cartable.sql
+  clown_info.sql
+  cookie_sales.sql
+  doughnut_ratings.sql
+  drink_info.sql
+  easy_drinks.sql
+  fish_info.sql
+  fish_records.sql
+  girls.sql
+  hooptie.sql
+  movie_table.sql
+  my_contacts_ch2.sql
+  projekts.sql
+  superheros.sql
+  toys.sql
+  toys_second_normal_form.sql
+  toys_third_normal_form.sql
+  your_table.sql
+}
+ Head First SQL August 2007.pdf
+ Temp.html
+ batch_actions.sql
+ cregs_list.sql
+ sql.html
+ sql.markdown
+ world.sql
+}
+
+

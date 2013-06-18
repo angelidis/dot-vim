@@ -1,0 +1,11 @@
+# generic ignores
+*.[oa]
+*~
+# vim specific
+.NERDTreeBookmarks
+.VimballRecord
+.hg/
+.hg_archival.txt
+.netrwhist
+.git/
+ctrlp_cache/
