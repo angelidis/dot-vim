@@ -49,3 +49,6 @@
 [submodule "bundle/utilsnips"]
 	path = bundle/utilsnips
 	url = git://github.com/vim-scripts/UltiSnips.git
+[submodule "bundle/closetag"]
+	path = bundle/closetag
+	url = git://github.com/docunext/closetag.vim.git
