@@ -654,42 +654,7 @@ let python_slow_sync = 1
 "	statusline {{{1
 if has("statusline")
     set statusline=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%{(&fenc\ ==\\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ [Format:%{&ff}]\ [FT:%Y]\ [%{&acd?'acd':'noacd'}]\ %{fugitive#statusline()}
-
-"    set statusline=[FORMAT=%{&ff}]\ [TYPE=%Y]\ [Line,Column]=[%04l,%04v][%p%%]\ [%L\ Lines]\ [%{&acd?'acd':'noacd'}]\ [%{(&fenc\ ==\\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ [FILE=%t%m%r%h%w] 
 endif
-
-"experimental features
-"	statusline wrapper - disabled {{{2
-"=========================================
-" 
-" if !has('statusline')
-"     if version >= 700
-"         " Fancy status line.
-"         set statusline =
-"         set statusline+=%-2.2n\                        " buffer number
-"         set statusline+=%f\                            " file name
-"         set statusline+=%h%m%r%w\                      " flags
-"         set statusline+=%{strlen(&ft)?&ft:'none'},     " file type
-"         set statusline+=%{(&fenc==\"\"?&enc:&fenc)},   " encoding
-"         set statusline+=%{((exists(\"+bomb\")\ &&\ &bomb)?\"B,\":\"\")} " BOM
-"         set statusline+=%{&fileformat},                " file format
-"         set statusline+=%{&spelllang},                 " spell language
-"         set statusline+=%=                             " indent right
-"         set statusline+=0x%B\                          " char under cursor
-"         set statusline+=%-6.(%l,%c%V%)\ %<%P           " position
-" 
-"         " Use different colors for statusline in current and non-current window.
-"         let g:Active_statusline=&g:statusline
-"         let g:NCstatusline=substitute(
-"                     \                substitute(g:Active_statusline,
-"                     \                'User1', 'User3', 'g'),
-"                     \                'User2', 'User4', 'g')
-"         au WinEnter * let&l:statusline = g:Active_statusline
-"         au WinLeave * let&l:statusline = g:NCstatusline
-"     endif
-" endif
-" 
-"==========================================================}}}2
 "}}}1
 "  Whitespace function	 {{{1
 "=========================================
