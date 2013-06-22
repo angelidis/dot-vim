@@ -14,29 +14,10 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 filetype plugin indent on
 
-"tested only on windows
-if has("multi_byte")
-  if &termencoding == ""
-    let &termencoding = &encoding
-  endif
-  set encoding=utf-8
-  setglobal fileencoding=utf-8
-  "setglobal bomb
-  set fileencodings=ucs-bom,utf-8,latin1
-endif
-
-"let g:loaded_matchparen=1 
-if !has("gui_running")
-    set t_Co=256
-endif
-let b:unaryTagsStack=""
-let b:unaryTagsStack=""
 
 " Settings: OS specific  {{{1
-"==========================================================
+
 if has("win16") || has("win32") || has("win64")
-    set textwidth=80
-    set clipboard=unnamed
     "default working directory
     cd C:\Users\angelidis\Documentz\txts
     let g:tagbar_ctags_bin ='C:\Users\angelidis\vimfiles\ctags\ctags.exe'
@@ -50,56 +31,64 @@ else
     set backupdir=$HOME/.vim/Backup
 endif
 
-
-" Settings:Unix
-"executing external commands -- shell environment {FreeBSD / Linux} {{{2
-
-"shell	name of the shell program used for external commands
-" TODO auto to allaksa prosfata.... den to exo dokimasei akoma
+" Settings - Unix
+"   executing external commands -- shell environment
+" TODO: Untested | Does it work with freebsd? 
 if has("unix")
-	"I use this with linux
+    set titlestring="angelidis's vim" "Terminal Settings
 	set shell=/bin/bash
-
-	"TODO Ta parakato tha isxuoun gia freebsd?? 
-	"makeprg	program used for the ":make" command
-	set mp=make
+	set makeprg=make
 	"shellpipe	string used to put the output of ":make" in the error file
 	set sp=2>&1\|\ tee
-
-    "Terminal Settings
-    set titlestring="angelidis's vim"
 endif
-"}}}2
 
 "========================================================== }}}1
 " Settings {{{1
 
-
-"turn off paren/parenthesis/whatever highlighting
-let loaded_matchparen = 1
-
-" Set filetype stuff to on
 filetype on
 filetype plugin on
 filetype indent on
-" Turn on that syntax highlighting
-syntax on
+syntax on "Turn on that syntax highlighting
 
-"spell settings
-set spelllang=el,en
-" set cindent	"works more cleverly than autoindent or smartindent
-"I use these for text
-set nocindent
+set gdefault "gdefault applies substitutions globally on lines
+set relativenumber
 set noautoindent
-
-
-
+" set undofile
+" let mapleader = ','
+let loaded_matchparen = 1 "turn off paren/parenthesis/whatever highlighting
+set spelllang=el,en
 set hidden
+set clipboard=unnamed
+set printoptions=header:0,duplex:long,paper:letter  "Printing options
+set wrapscan  "set the search scan to wrap lines
+" set vb " set visual bell -- i hate that damned beeping
+" set visualbell t_vb=""  "disable both the visual error flash and the error beep
+set backspace=2 "Allow backspacing over indent, eol, and the start of an insert
+set laststatus=2
+set history=100 "Keep some stuff in the history
+set scrolloff=4  "number of screen lines to show around the cursor
+set synmaxcol=2048 "Syntax coloring lines that are too long just slows down the world
+set showmode "At least let yourself know what mode you're in 
+set showcmd "show command line
+set cmdheight=3
+set nocursorline
+set nocursorcolumn
+set number "or set nu
+set numberwidth=8
+set noinsertmode "don't use Insert mode as the default mode
+set nolazyredraw
+set wildmenu "Enable enhanced command-line completion
+set wildignorecase "Make it easier to complete buffers, open files, etc...
+set wildmode=list:longest
+set ttyfast "Indicates a fast internet connection
 
+" Handle Long Lines
 set wrap         " long lines wrap
 set linebreak    " When wordwrap is on, don't break in the middle of words
 set showbreak=>>
-
+set textwidth=80
+" set colorcolumn=85
+set formatoptions=qrn1
 
 "Tab Settings
 set smarttab      " excellent!
@@ -112,130 +101,32 @@ set expandtab     " use spaces in place of tabs.
 "+ creates problems with minibuf
 set autochdir
 
-
-" Printing options
-set printoptions=header:0,duplex:long,paper:letter
-
-" set the search scan to wrap lines
-set wrapscan
-
-" set visual bell -- i hate that damned beeping
-" set vb
-" disable both the visual error flash and the error beep
-"set visualbell t_vb=""
-
-" At least let yourself know what mode you're in
-set showmode
-
-" Enable enhanced command-line completion. Presumes you have compiled
-" with +wildmenu.  See :help 'wildmenu'
-set wildmenu
-
-" Make it easier to complete buffers, open files, etc...
-set wildignorecase
-
 " Set the forward slash to be the slash of note.  Backslashes suck
 " This is really only applicable to Windows but I like to have a vimrc
 " that works no matter what OS I'm currently on
 set shellslash
 
-" Allow backspacing over indent, eol, and the start of an insert
-set backspace=2
+"▸-tab:▸\ ,tab:>-,trail:.,eol:¶,
+"set list! to toggle between listing chars and not listing them
+set listchars=tab:▸\ ,trail:.,eol:¬,extends:>,precedes:<,nbsp:%
 
-" tell Vim to always put a status line in, even if there is only one
-" window
-set laststatus=2
-
-" Hide the mouse pointer while typing
-set mousehide
-
-" The GUI (i.e. the 'g' in 'gvim') is fantastic, but let's not be
-" silly about it :)  The GUI is fantastic, but it's fantastic for
-" its fonts and its colours, not for its toolbar and its menus -
-" those just steal screen real estate
-"set guioptions=ac
-
-" This is the timeout used while waiting for user input on a
-" multi-keyed macro or while just sitting and waiting for another
-" key to be pressed measured in milliseconds.
-"
-" i.e. for the ",d" command, there is a "timeoutlen" wait
-"      period between the "," key and the "d" key.  If the
-"      "d" key isn't pressed before the timeout expires,
-"      one of two things happens: The "," command is executed
-"      if there is one (which there isn't) or the command aborts.
-"
-" The idea here is that if you have two commands, say ",dv" and
-" ",d" that it will take 'timeoutlen' milliseconds to recognize
-" that you're going for ",d" instead of ",dv"
-"
-" In general you should endeavour to avoid that type of
-" situation because waiting 'timeoutlen' milliseconds is
-" like an eternity.
-"set timeoutlen=500
-
-" Keep some stuff in the history
-set history=100
-
-set scrolloff=4  " number of screen lines to show around the cursor
-
-" Allow the cursor to go in to "invalid" places
-"set virtualedit=all
-
-" For how *I* code these are the best types of settings for
-" completion but I get rid of some neat things that you might
-" like
-"set complete=.,w,b,t
-
-set incsearch
-set hlsearch
+" Searching for a file
 set ignorecase
 set smartcase
+set incsearch
+set hlsearch
+"set virtualedit=all "Allow the cursor to go in to 'invalid' places
 
-"▸-tab:▸\ ,tab:>-,trail:.,eol:¶,
-set listchars=tab:▸\ ,trail:.,eol:¬,extends:>,precedes:<,nbsp:%
-"set list! to toggle between listing chars and not listing them
-
-" Syntax coloring lines that are too long just slows down the world
-set synmaxcol=2048
-
-"mouse settings
+"Mouse Settings
 set mouse=a                     " Use the mouse in all modes
-set mousemodel=popup            " Turn on the popup menu
+set mousemodel=popup_setpos     " Turn on the popup menu
 set mousehide                   " Hide the mouse cursor when the user types
-
-set number "or set nu
-set numberwidth=8
-
-set noinsertmode "don't use Insert mode as the default mode
-set nolazyredraw
 
 "Folding Settings
 set foldenable
 set foldmethod=marker
 " These commands open folds
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
-
-"Fix delete problem
-set bs=2
-
-set cmdheight=3
-"IMPORTANT: don't use them for console vim
-if has("gui_running")
-	"GUI is running or is about to start.
-	"Maximize gvim window.
-	"set co=1000 "width of the display
-	"set lines=999 "number of lines in the display
-
-	set showcmd "show command line
-	set cmdheight=3
-endif
-
-
-" Highlight the current line and column
-" Don't do this - It makes window redraws painfully slow
-set nocursorline
-set nocursorcolumn
 
 "Back Up - Swap
 set noswapfile
@@ -253,21 +144,30 @@ set sessionoptions+=winpos
 set cino+=g0 
 set cino+=t0
 set cino+=/4 
+
+"Encoding Settings
+"TODO: tested only on windows
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  "setglobal bomb
+  set fileencodings=ucs-bom,utf-8,latin1
+endif
+
+"let g:loaded_matchparen=1 
+if !has("gui_running")
+    set t_Co=256
+endif
+
+"	}}}1
 "	Auto Commands {{{1
-
-"		4 Reading Files
-"==================================
 if has("autocmd")
-    "autocommands
-    "autocmd BufEnter *.txt set guifont=Arial\ 12
-
-    "text files, autocommands
-    " autocmd BufEnter *.txt set guifont=Arial\ 12
-
     augroup mkd
     autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
     augroup END
-
 
     " ruby settings
     autocmd FileType ruby colorscheme railscasts
@@ -277,7 +177,6 @@ if has("autocmd")
     autocmd FileType cpp colorscheme railscasts
     autocmd FileType cpp set foldmethod=syntax
     autocmd FileType cpp set autoread
-
 
     "always highlight words same as current
     "autocmd CursorMoved * silent! exe printf('match Search /\<%s\>/', expand('<cword>'))
@@ -289,11 +188,8 @@ if has("autocmd")
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType c set omnifunc=ccomplete#Complete
 endif
-
-
+"	}}}1
 "	Maps : Used for programming {{{1
-"	Modifying Key Binding
-"	key shortcuts
 "==================================
 "see :help key-mapping
 "idea:
@@ -320,24 +216,19 @@ endif
     nmap  <silent> ,r :LustyFilesystemExplorerFromHere<cr>
     nmap <silent> <Leader>P :Project<CR>
 
-"tested only on linux
+"TODO: tested only on linux
 if has("unix")
     nmap  <silent> ,n :silent !nautilus "%:p:h"<cr>
     nmap  <silent> ,t :silent !gnome-terminal& --working-directory="%:p:h"<cr>
-
     "" nmap  <silent> ,r :silent !terminator& --maximise --working-directory="%:p:h"<cr>
-
     " Make the current file executable
     nmap ,x :w<cr>:!chmod 755 %<cr>:e<cr>
 endif
 
 " Tagbar [F9]
 nnoremap <F9> :TagbarToggle<CR>
-
 " :CommandT
-" also <leader>t is used
 map <C-t> :CommandT<CR>
-
 nmap <silent> <unique> <Leader>fe :NERDTreeToggle<CR> 
 nmap <unique><F7> :NERDTreeToggle<CR>
 "}}}1
@@ -384,10 +275,9 @@ map <S-down> <C-W><Down>
 " Wipe out all buffers
 nmap <silent> ,wa :1,9000bwipeout<cr>
 
-" Alright... let's try this out
-" alter the <ESC> key!
+" Quicker Escaping
 imap jj <esc>
-inoremap jk <ESC>
+inoremap jj <ESC>
 
 
 " cd to the directory containing the file in the buffer
@@ -546,7 +436,7 @@ endif
 "	MATCHINGs {{{1
 "===============================
 "so $VIMRUNTIME/syntax/hitest.vim -->>this options shows you all the possible 
-match Todo /^TODO/
+match TODO: /^TODO/
 "}}}1
 "	GVIM: Menus [gvim] {{{1
 "==========================================================
@@ -562,10 +452,12 @@ amenu <silent>&angelidis.monospace-bold12 :set guifont=monospace\ Bold\ 12<cr>
 amenu <silent>&angelidis.monospace12    :set guifont=monospace\ 12<cr>
 amenu <silent>&angelidis.Set\ Background\ To\ Dark    :set background=dark<cr>
 amenu <silent>&angelidis.Set\ Background\ To\ Light    :set background=light<cr>
+amenu <silent>&angelidis.Set\ Showmatch\ :set showmatch<cr>
+amenu <silent>&angelidis.Disable\ Showmatch\ :set noshowmatch<cr>
 
 amenu angelidis.-SEP3- :
 amenu <silent>&angelidis.Auto\ Change\ Directory : set autochdir! <cr>
-amenu &angelidis.Show\ Non-printable\ Characters   : set list!<cr>
+amenu &angelidis.Show\ Invisibles  : set list!<cr>
 amenu <silent>&angelidis.Wrap :set wrap!<cr>
 
 amenu angelidis.-SEP4- :
