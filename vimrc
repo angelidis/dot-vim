@@ -464,34 +464,23 @@ map <F2> a<C-R>=strftime("%c")<CR><Esc>
 
 "guioptions-=m  "remove menu bar
 "set guioptions-=T  "remove toolbar
-"Toggle Toolbar & Menu Bar in gvim: Ctrl-F1 {{{2
-"============================================
-"The following code maps the key combination Ctrl-F2 to toggle the menu and toolbar
-"in Gvim. Add it to your vimrc file if you want this functionality.
-"help 'guioptions'
-    map <silent> <C-F1> :if &guioptions =~# 'T'         <Bar>
-                                 \set guioptions-=T     <Bar>
-                           \else <Bar>
-                                 \set guioptions+=T     <Bar>
-                             \endif<CR>
+"Toggle Toolbar in gvim: Ctrl-F1 
+map <silent> <C-F1> :if &guioptions =~# 'T'         <Bar>
+                             \set guioptions-=T     <Bar>
+                       \else <Bar>
+                             \set guioptions+=T     <Bar>
+                         \endif<CR>
 
-"}}}2
-"Toggle Toolbar & Menu Bar in gvim: Ctrl-F2 {{{2
-"============================================
-"The following code maps the key combination Ctrl-F2 to toggle the menu and toolbar
-"in Gvim. Add it to your vimrc file if you want this functionality.
-"help 'guioptions'
-    map <silent> <C-F2> :if &guioptions =~# 'T'         <Bar>
-                                 \set guioptions-=T     <Bar>
-                                 \set guioptions-=m     <bar>
-                           \else <Bar>
-                                 \set guioptions+=T     <Bar>
-                                 \set guioptions+=m     <Bar>
-                             \endif<CR>
+"Toggle Toolbar & Menu Bar in gvim: Ctrl-F2
+map <silent> <C-F2> :if &guioptions =~# 'T'         <Bar>
+                             \set guioptions-=T     <Bar>
+                             \set guioptions-=m     <bar>
+                       \else <Bar>
+                             \set guioptions+=T     <Bar>
+                             \set guioptions+=m     <Bar>
+                         \endif<CR>
 
-"}}}2
-"	F11 & S-F11 changes window {{{2
-"=======================================
+" F11 & S-F11 changes window
 " go to next window, round-robin
 map     <F11>   <C-W>w
 imap    <F11>   <C-O><C-W>w
@@ -502,62 +491,10 @@ imap    <S-F11> <C-O><C-W>W
 " not the nth window up or down from current
 "see :help CTRL-W_w
 
-"}}}2
-"}}}1
-" Maps NOT USED {{{1
-"=======================================
-
-"<Leader>mt  - Toggles ShowMarks on and off.
-"<Leader>mo  - Turns ShowMarks on, and displays marks.
-"<Leader>mh  - Clears a mark.
-"<Leader>ma  - Clears all marks.
-"<Leader>mm  - Places the next available mark
-
-"BufExplorer [these are added by the plug in]
-"<Leader>be  - Opens BufExplorer
-"<Leader>bs  - Opens horizontally split window BufExplorer
-"<Leader>bv  - Opens vertically split window BufExplorer
-"<silent> <unique> <Leader>be :BufExplorer<CR>
-"<silent> <unique> <Leader>bs :HSBufExplorer<CR>
-"<silent> <unique> <Leader>bv :VSBufExplorer<CR>
-
-
-
-" Signs - place/remove: F7, Ctrl-F7
-"needs info on addon_signs.vim
-" map <F7> :exe ":sign place 123 line=" . line(".") "name=information file=" . expand("%.p") <CR>
-" map <C-F7> : sign unplace<CR>
-
-
-" Related to Plugins
-"\me opens marks explorer
-
-"<Leader> maps [\me][\be][\fe] {{{2
-"me: for marks explorer
-"be: for buffer explorer
-"fe: file explorer
-"search-lines '<Leader>'
-
-"MarksExplorer [these are added by the plug in]
-
-"
-"}}}2
-"	Always Displaying Tag Stack {{{2
-"=======================================
-
-"What this does is, every time I use the <C-T> command to jump back a
-"tag, I also view the tag stack, and I've added the ALT-t command to
-"jump forward in the tag stack (the reverse of CTRL-T), also showing
-"the tag stack afterwards.
-
-" nnoremap <c-t> <c-t>:tags<cr>
-"nnoremap <M-t> :tag \| tags<cr>
-"}}}2
 "}}}1
 "Plugin: CtrlP {{{1
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cache_dir = $HOME.'/vimfiles/ctrlp_cache'
-
 "}}}1
 "Plugin: netrw & NERDTree{{{1
 "===============================
