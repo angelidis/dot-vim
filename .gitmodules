@@ -67,3 +67,6 @@
 [submodule "bundle/delimitMate"]
 	path = bundle/delimitMate
 	url = git://github.com/Raimondi/delimitMate.git
+[submodule "bundle/python-syntax"]
+	path = bundle/python-syntax
+	url = git://github.com/hdima/python-syntax.git
