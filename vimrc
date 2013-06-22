@@ -101,22 +101,12 @@ set linebreak    " When wordwrap is on, don't break in the middle of words
 set showbreak=>>
 
 
-"tabs
+"Tab Settings
 set smarttab      " excellent!
 set tabstop=4     " number of spaces for a tab.
 set softtabstop=4 " number of spaces for a tab in editing operations.
 set shiftwidth=4  " number of spaces for indentation commands (>>, <<, ...)
 set expandtab     " use spaces in place of tabs.
-
-" Set tabstop to tell vim how many columns a tab counts for. This is the only command here that will affect how existing text displays.
-" When expandtab is set, hitting Tab in insert mode will produce the appropriate number of spaces.
-" Set softtabstop to control how many columns vim uses when you hit Tab in
-" insert mode. If softtabstop is less than tabstop and expandtab is not set,
-" vim will use a combination of tabs and spaces to make up the desired
-" spacing. If softtabstop equals tabstop and expandtab is not set, vim will
-" always use tabs. When expandtab is set, vim will always use the appropriate
-" number of spaces.
-
 
 "disable autochdir if you want mksession to work correctly
 "+ creates problems with minibuf
