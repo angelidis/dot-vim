@@ -40,6 +40,7 @@ if has("win16") || has("win32") || has("win64")
     "default working directory
     cd C:\Users\angelidis\Documentz\txts
     let g:tagbar_ctags_bin ='C:\Users\angelidis\vimfiles\ctags\ctags.exe'
+    set directory+=$HOME/vimfiles/temp
 "for unix
 else
     "path	list of directory names used for file searching
@@ -611,107 +612,11 @@ let g:proj_run3='silent !gvim %f'
 let g:proj_run3='silent !nautilus %:d:h'
 
 "===============================}}}1
-"Plugin:	Taglist {{{1
-"===============================
-
-" To jump to a tag on a single mouse click set the 'Tlist_Use_SingleClick' variable to 1.
-"let Tlist_Use_SingleClick = 1
-
-" P to jump to tag
-" p to preview tag 
-" t to open in new tab
-
-" To process files even when the taglist window is not open, set
-"let Tlist_Process_File_Always = 1
-
-"Displaying tags for only one file
-let list_Show_One_File=1
-
-
-"when set to 1, then the ":TlistToggle" command opens the taglist window and moves the cursor to the taglist window.
-let Tlist_GainFocus_On_ToggleOpen =1
-
-"To automatically open the taglist window on Vim startup, set the 'Tlist_Auto_Open' variable to 1.
-"let Tlist_Auto_Open=1
-
-"To automatically close the taglist window when a tag or file is selected
-"let Tlist_Close_On_Select = 1
-
-"Taglist
-let Tlist_Show_Menu          = 1 "show Taglist drop-down menu
-let Tlist_Auto_Highlight_Tag = 1 "Automatically highlight the current tag in the taglist.
-let Tlist_Sort_Type          = "name"	"Sort method used for arranging the tags.
-
-"===============================}}}1
-"  FT: Python	 {{{1
-"=========================================
-" I have a separate bundle for python code
-" Python
-let python_highlight_all =1
-let python_slow_sync = 1
-
-"==========================================================}}}1
 "	Statusline {{{1
 if has("statusline")
     set statusline=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%{(&fenc\ ==\\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ [Format:%{&ff}]\ [FT:%Y]\ [%{&acd?'acd':'noacd'}]\ %{fugitive#statusline()}
 endif
 "}}}1
-"  Whitespace function	 {{{1
-"=========================================
-
-
-" Highlight whitespace problems.
-" flags is '' to clear highlighting, or is a string to
-" specify what to highlight (one or more characters):
-"   e  whitespace at end of line
-"   i  spaces used for indenting
-"   s  spaces before a tab
-"   t  tabs not at start of line
-function! ShowWhitespace(flags)
-  let bad = ''
-  let pat = []
-  for c in split(a:flags, '\zs')
-    if c == 'e'
-      call add(pat, '\s\+$')
-    elseif c == 'i'
-      call add(pat, '^\t*\zs \+')
-    elseif c == 's'
-      call add(pat, ' \+\ze\t')
-    elseif c == 't'
-      call add(pat, '[^\t]\zs\t\+')
-    else
-      let bad .= c
-    endif
-  endfor
-  if len(pat) > 0
-    let s = join(pat, '\|')
-    exec 'syntax match ExtraWhitespace "'.s.'" containedin=ALL'
-  else
-    syntax clear ExtraWhitespace
-  endif
-  if len(bad) > 0
-    echo 'ShowWhitespace ignored: '.bad
-  endif
-endfunction
-
-function! ToggleShowWhitespace()
-  if !exists('b:ws_show')
-    let b:ws_show = 0
-  endif
-  if !exists('b:ws_flags')
-    let b:ws_flags = 'est'  " default (which whitespace to show)
-  endif
-  let b:ws_show = !b:ws_show
-  if b:ws_show
-    call ShowWhitespace(b:ws_flags)
-  else
-    call ShowWhitespace('')
-  endif
-endfunction
-
-nnoremap <Leader>ws :call ToggleShowWhitespace()<CR>
-highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-"==========================================================}}}1
 "	MATCHINGs {{{1
 "===============================
 "so $VIMRUNTIME/syntax/hitest.vim -->>this options shows you all the possible 
@@ -857,7 +762,59 @@ endif
 "Tricks settings {{{
 
 "}}}1
+"  Whitespace function	 {{{1
+"=========================================
 
-" set directory+=,C:/Users/angelidis/vimfiles/temp,$TMP
-" set directory+=C:/Users/angelidis/vimfiles/temp
-set directory=$HOME/vimfiles/temp
+
+" Highlight whitespace problems.
+" flags is '' to clear highlighting, or is a string to
+" specify what to highlight (one or more characters):
+"   e  whitespace at end of line
+"   i  spaces used for indenting
+"   s  spaces before a tab
+"   t  tabs not at start of line
+function! ShowWhitespace(flags)
+  let bad = ''
+  let pat = []
+  for c in split(a:flags, '\zs')
+    if c == 'e'
+      call add(pat, '\s\+$')
+    elseif c == 'i'
+      call add(pat, '^\t*\zs \+')
+    elseif c == 's'
+      call add(pat, ' \+\ze\t')
+    elseif c == 't'
+      call add(pat, '[^\t]\zs\t\+')
+    else
+      let bad .= c
+    endif
+  endfor
+  if len(pat) > 0
+    let s = join(pat, '\|')
+    exec 'syntax match ExtraWhitespace "'.s.'" containedin=ALL'
+  else
+    syntax clear ExtraWhitespace
+  endif
+  if len(bad) > 0
+    echo 'ShowWhitespace ignored: '.bad
+  endif
+endfunction
+
+function! ToggleShowWhitespace()
+  if !exists('b:ws_show')
+    let b:ws_show = 0
+  endif
+  if !exists('b:ws_flags')
+    let b:ws_flags = 'est'  " default (which whitespace to show)
+  endif
+  let b:ws_show = !b:ws_show
+  if b:ws_show
+    call ShowWhitespace(b:ws_flags)
+  else
+    call ShowWhitespace('')
+  endif
+endfunction
+
+nnoremap <Leader>ws :call ToggleShowWhitespace()<CR>
+highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+"==========================================================}}}1
