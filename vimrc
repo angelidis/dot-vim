@@ -105,7 +105,7 @@ set showbreak=>>
 set smarttab      " excellent!
 set tabstop=4     " number of spaces for a tab.
 set softtabstop=4 " number of spaces for a tab in editing operations.
-set shiftwidth=4  " number of spaces for indent (>>, <<, ...)
+set shiftwidth=4  " number of spaces for indentation commands (>>, <<, ...)
 set expandtab     " use spaces in place of tabs.
 
 " Set tabstop to tell vim how many columns a tab counts for. This is the only command here that will affect how existing text displays.
@@ -202,9 +202,8 @@ set hlsearch
 set ignorecase
 set smartcase
 
-"http://vim.wikia.com/wiki/Highlight_unwanted_spaces
-"set listchars+=tab:>-,trail:-
-set listchars=tab:>-,trail:.,eol:¶,extends:>,precedes:<,nbsp:%
+"▸-tab:▸\ ,tab:>-,trail:.,eol:¶,
+set listchars=tab:▸\ ,trail:.,eol:¬,extends:>,precedes:<,nbsp:%
 "set list! to toggle between listing chars and not listing them
 
 " Syntax coloring lines that are too long just slows down the world
@@ -571,6 +570,8 @@ amenu <silent>&angelidis.Bottom\ Scrollbars.Disable :set guioptions-=b<cr>
 amenu angelidis.-SEP2- :
 amenu <silent>&angelidis.monospace-bold12 :set guifont=monospace\ Bold\ 12<cr>
 amenu <silent>&angelidis.monospace12    :set guifont=monospace\ 12<cr>
+amenu <silent>&angelidis.Set\ Background\ To\ Dark    :set background=dark<cr>
+amenu <silent>&angelidis.Set\ Background\ To\ Light    :set background=light<cr>
 
 amenu angelidis.-SEP3- :
 amenu <silent>&angelidis.Auto\ Change\ Directory : set autochdir! <cr>
@@ -696,9 +697,6 @@ if has("gui_running")
     endif
 endif
 " }}}1
-"Tricks settings {{{
-
-"}}}1
 "  Whitespace function	 {{{1
 "=========================================
 
