@@ -651,7 +651,7 @@ let python_highlight_all =1
 let python_slow_sync = 1
 
 "==========================================================}}}1
-"	statusline {{{1
+"	Statusline {{{1
 if has("statusline")
     set statusline=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%{(&fenc\ ==\\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ [Format:%{&ff}]\ [FT:%Y]\ [%{&acd?'acd':'noacd'}]\ %{fugitive#statusline()}
 endif
