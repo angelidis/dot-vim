@@ -1,5 +1,6 @@
 " VIMRC created by angelidis in 08/03/2007
 " updated on 
+" 6/23/2013 1:28:11 PM
 " 6/22/2013 8:27:59 PM
 " 3/19/2013 12:01:13 AM
 " 8/19/2012 11:10:15 AM
@@ -17,12 +18,12 @@ call pathogen#helptags()
 filetype plugin indent on
 
 
-" Settings: OS specific  {{{1
-
+" OS Specific Settings  {{{1
 if has("win16") || has("win32") || has("win64")
     "default working directory
     cd C:\Users\angelidis\Documentz\txts
     let g:tagbar_ctags_bin ='C:\Users\angelidis\vimfiles\ctags\ctags.exe'
+    let g:NERDTreeBookmarksFile="C:\\Users\\angelidis\\vimfiles\\NERDTreeBookmarks"
     set directory+=$HOME/vimfiles/temp
 "for unix
 else
@@ -31,6 +32,7 @@ else
     set vdir=$HOME/.vim/view
     set dir=$HOME/.vim/Swap
     set backupdir=$HOME/.vim/Backup
+    let NERDTreeBookmarksFile="$HOME/.vim/.NERDTreeBookmarks"
 endif
 
 " Settings - Unix
@@ -45,7 +47,7 @@ if has("unix")
 endif
 
 "========================================================== }}}1
-" Settings {{{1
+"Vim - Settings {{{1
 
 "Encoding Settings
 "TODO: tested only on windows
@@ -95,6 +97,8 @@ set wildmenu "Enable enhanced command-line completion
 set wildignorecase "Make it easier to complete buffers, open files, etc...
 " set wildmode=list:longest
 set ttyfast "Indicates a fast internet connection
+" Suffixes that get lower priority when doing tab completion for filenames.
+set suffixes=.bak,~,.swp,.o,.h,.obj,.info,.aux,.log,.dvi,.out,.toc,tags
 
 " Handle Long Lines
 set wrap         " long lines wrap
@@ -137,7 +141,7 @@ set mousemodel=popup_setpos     " Turn on the popup menu
 set mousehide                   " Hide the mouse cursor when the user types
 
 "Folding Settings
-set foldenable
+" set foldenable  "When off, all folds are open
 set foldmethod=marker
 " These commands open folds
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
@@ -164,7 +168,35 @@ if !has("gui_running")
     set t_Co=256
 endif
 
-"	}}}1
+if has("statusline")
+    set statusline=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%{(&fenc\ ==\\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ [Format:%{&ff}]\ [FT:%Y]\ [%{&acd?'acd':'noacd'}]\ %{fugitive#statusline()}
+endif
+"}}}1
+"gVim Settings {{{1
+:set guioptions-=T  "remove toolbar
+
+if has("gui_running")
+    colorscheme agge_dual
+endif
+
+"theme for console vim
+" colorscheme default overrides background=light
+" so set the background last.
+set t_Co=256
+if !has("gui_running")
+		colorscheme default
+		set background=light
+endif
+
+"Font Settings
+if has("gui_running")
+    if has("win16") || has("win32") || has("win64") "for windows
+        set guifont=Consolas:h12:cGREEK
+    else "for unix
+        set guifont=Inconsolata\ 12,monospace\ 14
+    endif
+endif
+" }}}1
 "	Auto Commands {{{1
 if has("autocmd")
     augroup mkd
@@ -244,7 +276,6 @@ nmap <unique><F7> :NERDTreeToggle<CR>
 imap <kInsert> <ESC>:w<CR>
 map <kInsert> :w<CR>
 
-
 " Press Space to turn off highlighting and clear any message already displayed.
 :noremap <silent> <Space> :silent noh<Bar>echo<CR>
 
@@ -258,6 +289,11 @@ map <A-DOWN> gj
 map <A-UP> gk
 imap <A-UP> <ESC>gki
 imap <A-DOWN> <ESC>gji
+" Cursor keys use screen lines
+" map <up> gk
+" map <down> gj
+" imap <down> <c-o>gj
+" imap <up> <c-o>gk
 
 " Buffers - next/previous: Ctrl-Right, Ctrl-Left
 map <C-right> <ESC>:bn<CR>
@@ -373,19 +409,18 @@ imap    <S-F11> <C-O><C-W>W
 "see :help CTRL-W_w
 
 "}}}1
-"Plugin: CtrlP {{{1
+" Plugins Settings {{{1
+
+" CtrlP
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cache_dir = $HOME.'/vimfiles/ctrlp_cache'
-"}}}1
-"Plugin: netrw & NERDTree{{{1
-"===============================
 
+"netrw
 " check the mappings/shortcut section for shortcuts
 let g:netrw_listhide="\.ico$,\.png$,\.jpg$,\^\..*"
 let g:netrw_sort_sequence="[\/]$,\.h$,\.c$,\.cpp$,\.css,\.html,*,\.o$,\.obj$,\.info$,\.swp$,\.bak$,\~$"
 
-
-"NERDTree various settings
+"NERDTree
 let NERDTreeHijackNetrw=0
 let NERDTreeShowHidden=1 "don't show hidden files
 let NERDTreeWinPos="right"
@@ -407,43 +442,19 @@ let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
                    \ '\.embed\.manifest$', '\.embed\.manifest.res$',
                    \ '\.intermediate\.manifest$', '^mt.dep$' ]
 
-
-if has("win16") || has("win32") || has("win64")
-    let g:NERDTreeBookmarksFile="C:\\Users\\angelidis\\vimfiles\\NERDTreeBookmarks"
-else
-    let NERDTreeBookmarksFile="$HOME/.vim/.NERDTreeBookmarks"
-endif
-"===============================}}}1
-"Plugin:	Project{{{1
-"===============================
-
+"Plugin:	Project
 if has("win32") || has("mac")
     let g:proj_flags='imst'             " Project default flags for windows/mac
 else
     let g:proj_flags='imstb'            " Project default flags for everything else
+    "TODO:den leitougoun sosta
+    "Project Plugin
+    let g:proj_run3='silent !gvim %f'
+    let g:proj_run3='silent !nautilus %:d:h'
 endif
 "let g:proj_window_width = 35
-
-"TODO:den leitougoun sosta
-"Project Plugin
-let g:proj_run3='silent !gvim %f'
-let g:proj_run3='silent !nautilus %:d:h'
-
-"===============================}}}1
-"	Statusline {{{1
-if has("statusline")
-    set statusline=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%{(&fenc\ ==\\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ [Format:%{&ff}]\ [FT:%Y]\ [%{&acd?'acd':'noacd'}]\ %{fugitive#statusline()}
-endif
 "}}}1
-"	MATCHINGs {{{1
-"===============================
-"so $VIMRUNTIME/syntax/hitest.vim -->>this options shows you all the possible 
-match TODO /^TODO/
-"}}}1
-"	GVIM: Menus [gvim] {{{1
-"==========================================================
-"dont forget nmenu/vmenu etc page 39
-
+"	gVim - Menus [gvim] {{{1
 "angelidis menu {{{2
 amenu angelidis.-SEP- :
 amenu <silent>&angelidis.Bottom\ Scrollbars.Enable :set guioptions+=b<cr>
@@ -454,12 +465,16 @@ amenu <silent>&angelidis.monospace-bold12 :set guifont=monospace\ Bold\ 12<cr>
 amenu <silent>&angelidis.monospace12    :set guifont=monospace\ 12<cr>
 amenu <silent>&angelidis.Set\ Background\ To\ Dark    :set background=dark<cr>
 amenu <silent>&angelidis.Set\ Background\ To\ Light    :set background=light<cr>
-amenu <silent>&angelidis.Set\ Showmatch\ :set showmatch<cr>
-amenu <silent>&angelidis.Disable\ Showmatch\ :set noshowmatch<cr>
+amenu <silent>&angelidis.Set\ Showmatch :set showmatch<cr>
+tmenu <silent>&angelidis.Set\ Showmatch When a bracket is inserted, briefly jump to the matching one
+amenu <silent>&angelidis.Disable\ Showmatch :set noshowmatch<cr>
+tmenu <silent>&angelidis.Set\ Showmatch Revert to normal behaviour
 
 amenu angelidis.-SEP3- :
-amenu <silent>&angelidis.Auto\ Change\ Directory : set autochdir! <cr>
+amenu <silent>&angelidis.Auto\ Change\ Directory :set autochdir! <cr>
+tmenu <silent>&angelidis.Auto\ Change\ Directory Change the current working directory to the directory of the file in the buffer
 amenu &angelidis.Show\ Invisibles  : set list!<cr>
+tmenu &angelidis.Show\ Invisibles  Display unprintable characters, like tab
 amenu <silent>&angelidis.Wrap :set wrap!<cr>
 
 amenu angelidis.-SEP4- :
@@ -472,14 +487,19 @@ amenu &angelidis.Cursor\ Column    :set cursorcolumn!<cr>
 
 amenu angelidis.-SEP6- :
 amenu &angelidis.SpellCheck  :setlocal spell!<cr>
+tmenu &angelidis.SpellCheck  Enable spellchecking
 amenu &angelidis.Clear\ Highlight  :nohlsearch<cr>
 
 amenu angelidis.-SEP7- :
 amenu &angelidis.Backlash\ To\ Forward\ Slash  :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<cr>
 amenu &angelidis.Forward\ To\ Backlash\ Slash  :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<cr>
 amenu &angelidis.Put\ Filepath\ in\ Clipboard  :let @*=substitute(expand("%:p"), '/', '\', 'g')<cr>
+tmenu &angelidis.Put\ Filepath\ in\ Clipboard  Copy the complete filepath (path+filename) of the current file in clipboard
 
 amenu &angelidis.Save\ each\ line\ in\ current\ buffer\ to\ a\ seperate\ file :g/^/execute '.w '.line('.').'.txt'<cr>
+
+amenu &angelidis.Delete\ All\ Spaces  :%s/[ ^I]//g<CR>
+tmenu &angelidis.Delete\ All\ Spaces  Deletes spaces from the buffer
 
 " Change between backslash and forward slash
 " From <http://vim.wikia.com/wiki/VimTip431> 
@@ -542,44 +562,133 @@ amenu <silent>&Project.mk-nr-session :call MyMakeSession() <cr>
 amenu <silent>&Project.so-nr-session :call MyLoadSession() <cr>
 amenu <silent>&Project.nr-tags  :call NrTags() <cr>
 "}}}2
+"}}}1
+"	(g)Vim - Tabline {{{1
 
-"======================================================================}}}1
+" set up tab labels with tab number, buffer name, number of windows
+function! GuiTabLabel() "{{{2
+ let label = ''
+ let bufnrlist = tabpagebuflist(v:lnum)
 
-"=====================================
-"	end section: buttons [gvim] 
-"=================================================}}}1
-"GVim settings {{{1
-"============================
-:set guioptions-=T  "remove toolbar
+ " Add '+' if one of the buffers in the tab page is modified
+ for bufnr in bufnrlist
+   if getbufvar(bufnr, "&modified")
+     let label = '+'
+     break
+   endif
+ endfor
 
-"Colorschemes
-if has("gui_running")
-    colorscheme agge_dual
-endif
+ " Append the tab number
+ let label .= tabpagenr().': '
 
-"theme for console vim
-" colorscheme default overrides background=light
-" so set the background last.
-set t_Co=256
-if !has("gui_running")
-		colorscheme default
-		set background=light
-endif
+ " Append the buffer name
+ let name = bufname(bufnrlist[tabpagewinnr(v:lnum) - 1])
+ if name == ''
+   " give a name to no-name documents
+   if &buftype=='quickfix'
+     let name = '[Quickfix List]'
+   else
+     let name = '[No Name]'
+   endif
+ else
+   " get only the file name
+   let name = fnamemodify(name,":t")
+ endif
+ let label .= name
 
+ " Append the number of windows in the tab page
+ let wincount = tabpagewinnr(v:lnum, '$')
+ return label . '  [' . wincount . ']'
+endfunction
+"}}}2
 
-"tabline
-" set tabline=%!MyTabLine()
+" set up tab tooltips with every buffer name
+function! GuiTabToolTip() "{{{2
+ let tip = ''
+ let bufnrlist = tabpagebuflist(v:lnum)
 
-"Font Settings
-if has("gui_running")
-    if has("win16") || has("win32") || has("win64") "for windows
-        "Windows Fonts Settings
-        set guifont=Consolas:h12:cGREEK
-    else "for unix
-        set guifont=Inconsolata\ 12,monospace\ 14
-    endif
-endif
-" }}}1
+ for bufnr in bufnrlist
+   " separate buffer entries
+   if tip!=''
+     let tip .= ' | '
+   endif
+
+   " Add name of buffer
+   let name=bufname(bufnr)
+   if name == ''
+     " give a name to no name documents
+     if getbufvar(bufnr,'&buftype')=='quickfix'
+       let name = '[Quickfix List]'
+     else
+       let name = '[No Name]'
+     endif
+   endif
+   let tip.=name
+
+   " add modified/modifiable flags
+   if getbufvar(bufnr, "&modified")
+     let tip .= ' [+]'
+   endif
+   if getbufvar(bufnr, "&modifiable")==0
+     let tip .= ' [-]'
+   endif
+ endfor
+
+ return tip
+endfunction
+"}}}2
+
+"Used with console vim
+function! MyTabLine() "{{{2
+	let s = ''
+	for i in range(tabpagenr('$'))
+	" select the highlighting
+	if i + 1 == tabpagenr()
+	let s .= '%#TabLineSel#'
+	else
+	let s .= '%#TabLine#'
+	endif
+
+	" set the tab page number (for mouse clicks)
+	let s .= '%' . (i + 1) . 'T'
+
+	" the label is made by MyTabLabel()
+	let s .= ' %{MyTabLabel(' . (i + 1) . ')} |'
+	endfor
+
+	" after the last tab fill with TabLineFill and reset tab page nr
+	let s .= '%#TabLineFill#%T'
+
+	" right-align the label to close the current tab page
+	if tabpagenr('$') > 1
+	let s .= '%=%#TabLine#%999X X'
+	endif
+
+	"echomsg 's:' . s
+	return s
+endfunction
+
+function! MyTabLabel(n)
+	let buflist = tabpagebuflist(a:n)
+	let winnr = tabpagewinnr(a:n)
+	let numtabs = tabpagenr('$')
+	" account for space padding between tabs, and the "close" button
+	let maxlen = ( &columns - ( numtabs * 2 ) - 4 ) / numtabs
+	let tablabel = bufname(buflist[winnr - 1])
+	while strlen( tablabel ) < 4
+	let tablabel = tablabel . " "
+	endwhile
+	let tablabel = fnamemodify( tablabel, ':t' )
+	let tablabel = strpart( tablabel, 0, maxlen )
+	return tablabel
+endfunction
+"}}}2
+
+set guitablabel=%{GuiTabLabel()}
+set guitabtooltip=%{GuiTabToolTip()}
+set tabline=%!MyTabLine()
+
+"}}}1
 "  Whitespace function	 {{{1
 "=========================================
 
