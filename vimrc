@@ -3,6 +3,8 @@
 " 6/22/2013 8:27:59 PM
 " 3/19/2013 12:01:13 AM
 " 8/19/2012 11:10:15 AM
+scriptencoding utf-8 "tell vim to read the file as UTF8 even if you're on a non-UTF system
+
 if has("win16") || has("win32") || has("win64")
     let $MYVIMRC='C:/Users/angelidis/vimfiles/vimrc'
 endif
@@ -45,6 +47,18 @@ endif
 "========================================================== }}}1
 " Settings {{{1
 
+"Encoding Settings
+"TODO: tested only on windows
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  "setglobal bomb
+  set fileencodings=ucs-bom,utf-8,latin1
+endif
+
 filetype on
 filetype plugin on
 filetype indent on
@@ -63,7 +77,7 @@ set printoptions=header:0,duplex:long,paper:letter  "Printing options
 set wrapscan  "set the search scan to wrap lines
 " set vb " set visual bell -- i hate that damned beeping
 " set visualbell t_vb=""  "disable both the visual error flash and the error beep
-set backspace=2 "Allow backspacing over indent, eol, and the start of an insert
+set backspace=indent,eol,start whichwrap+=<,>,[,] "backspace and cursor keys wrap to previous/next line
 set laststatus=2
 set history=100 "Keep some stuff in the history
 set scrolloff=4  "number of screen lines to show around the cursor
@@ -97,6 +111,10 @@ set softtabstop=4 " number of spaces for a tab in editing operations.
 set shiftwidth=4  " number of spaces for indentation commands (>>, <<, ...)
 set expandtab     " use spaces in place of tabs.
 
+"tab:▸\ ,tab:>-,eol:¬,eol:¶,
+"set list! to toggle between listing chars and not listing them
+set listchars=tab:▸\ ,trail:.,eol:¬,extends:>,precedes:<,nbsp:%
+
 "disable autochdir if you want mksession to work correctly
 "+ creates problems with minibuf
 set autochdir
@@ -105,10 +123,6 @@ set autochdir
 " This is really only applicable to Windows but I like to have a vimrc
 " that works no matter what OS I'm currently on
 set shellslash
-
-"▸-tab:▸\ ,tab:>-,trail:.,eol:¶,
-"set list! to toggle between listing chars and not listing them
-set listchars=tab:▸\ ,trail:.,eol:¬,extends:>,precedes:<,nbsp:%
 
 " Searching for a file
 set ignorecase
@@ -144,18 +158,6 @@ set sessionoptions+=winpos
 set cino+=g0 
 set cino+=t0
 set cino+=/4 
-
-"Encoding Settings
-"TODO: tested only on windows
-if has("multi_byte")
-  if &termencoding == ""
-    let &termencoding = &encoding
-  endif
-  set encoding=utf-8
-  setglobal fileencoding=utf-8
-  "setglobal bomb
-  set fileencodings=ucs-bom,utf-8,latin1
-endif
 
 "let g:loaded_matchparen=1 
 if !has("gui_running")
@@ -262,15 +264,15 @@ map <C-right> <ESC>:bn<CR>
 map <C-left> <ESC>:bp<CR>
 
 " Windows - navigate open windows: Shift-left/right/up/down
-imap <S-right> <ESC><C-W><Right><CR>
-imap <S-left> <ESC><C-W><Left><CR>
-imap <S-up> <ESC><C-W><Up><CR>
-imap <S-down> <ESC><C-W><Down><CR>
-
-map <S-right> <C-W><Right>
-map <S-left> <C-W><Left>
-map <S-up> <C-W><Up>
-map <S-down> <C-W><Down>
+" imap <S-right> <ESC><C-W><Right><CR>
+" imap <S-left> <ESC><C-W><Left><CR>
+" imap <S-up> <ESC><C-W><Up><CR>
+" imap <S-down> <ESC><C-W><Down><CR>
+" 
+" map <S-right> <C-W><Right>
+" map <S-left> <C-W><Left>
+" map <S-up> <C-W><Up>
+" map <S-down> <C-W><Down>
 
 " Wipe out all buffers
 nmap <silent> ,wa :1,9000bwipeout<cr>
@@ -436,7 +438,7 @@ endif
 "	MATCHINGs {{{1
 "===============================
 "so $VIMRUNTIME/syntax/hitest.vim -->>this options shows you all the possible 
-match TODO: /^TODO/
+match TODO /^TODO/
 "}}}1
 "	GVIM: Menus [gvim] {{{1
 "==========================================================
