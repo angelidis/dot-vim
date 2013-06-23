@@ -64,8 +64,11 @@ filetype plugin on
 filetype indent on
 syntax on "Turn on that syntax highlighting
 
+" behave mswin "fix select mode
 set gdefault "gdefault applies substitutions globally on lines
+set numberwidth=8
 set relativenumber
+" set number "it's this or relative number
 set noautoindent
 " set undofile
 " let mapleader = ','
@@ -87,13 +90,11 @@ set showcmd "show command line
 set cmdheight=3
 set nocursorline
 set nocursorcolumn
-set number "or set nu
-set numberwidth=8
 set noinsertmode "don't use Insert mode as the default mode
 set nolazyredraw
 set wildmenu "Enable enhanced command-line completion
 set wildignorecase "Make it easier to complete buffers, open files, etc...
-set wildmode=list:longest
+" set wildmode=list:longest
 set ttyfast "Indicates a fast internet connection
 
 " Handle Long Lines
