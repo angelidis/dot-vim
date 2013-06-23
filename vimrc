@@ -64,7 +64,6 @@ filetype plugin on
 filetype indent on
 syntax on "Turn on that syntax highlighting
 
-" behave mswin "fix select mode
 set gdefault "gdefault applies substitutions globally on lines
 set numberwidth=8
 set relativenumber
@@ -481,7 +480,6 @@ amenu &angelidis.Forward\ To\ Backlash\ Slash  :let tmp=@/<Bar>s:/:\\:ge<Bar>let
 amenu &angelidis.Put\ Filepath\ in\ Clipboard  :let @*=substitute(expand("%:p"), '/', '\', 'g')<cr>
 
 amenu &angelidis.Save\ each\ line\ in\ current\ buffer\ to\ a\ seperate\ file :g/^/execute '.w '.line('.').'.txt'<cr>
-
 
 " Change between backslash and forward slash
 " From <http://vim.wikia.com/wiki/VimTip431> 
