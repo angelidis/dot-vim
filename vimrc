@@ -67,8 +67,6 @@ filetype indent on
 syntax on "Turn on that syntax highlighting
 
 set gdefault "gdefault applies substitutions globally on lines
-set numberwidth=8
-set relativenumber
 " set number "it's this or relative number
 set noautoindent
 " set undofile
@@ -100,10 +98,12 @@ set ttyfast "Indicates a fast internet connection
 " Suffixes that get lower priority when doing tab completion for filenames.
 set suffixes=.bak,~,.swp,.o,.h,.obj,.info,.aux,.log,.dvi,.out,.toc,tags
 
+set numberwidth=1
+set relativenumber
 " Handle Long Lines
 set wrap         " long lines wrap
 set linebreak    " When wordwrap is on, don't break in the middle of words
-set showbreak=>>
+" set showbreak=>>
 set textwidth=80
 " set colorcolumn=85
 set formatoptions=qrn1
@@ -325,17 +325,17 @@ nmap  ,cd :lcd %:h
 
 " Let's make it easy to edit this file (mnemonic for the key sequence is
 " 'e'dit 'v'imrc)
-nmap <silent> ,ev :e $MYVIMRC<cr>
+nmap <silent> ,ev :e $MYVIMRC<bar>echo $MYVIMRC<cr>
 
 " And to source this file as well (mnemonic for the key sequence is
 " 's'ource 'v'imrc)
-nmap <silent> ,sv :so $MYVIMRC<cr>
+nmap <silent> ,sv :so $MYVIMRC<bar>echo $MYVIMRC<cr>
 
 " Toggle paste mode
-nmap  ,p :set invpaste:set paste?
+nmap  ,p :set invpaste<bar>:set paste?<cr>
 
 " Set text wrapping toggles
-nmap  ,w :set invwrap:set wrap?
+nmap  ,w :set invwrap<bar>:set wrap?<cr>
 
 " Set up retabbing on a source file
 nmap  ,rr :1,$retab
@@ -343,7 +343,7 @@ nmap  ,rr :1,$retab
 " Make the directory that contains the file in the current buffer.
 " This is useful when you edit a file in a directory that doesn't
 " (yet) exist
-nmap  ,mkdir :!mkdir -p %:p:h
+nmap  ,mkdir :!mkdir -p %:p:h<cr>
 
 " Close the window below this one
 noremap <silent> ,cj :wincmd j<cr>:close<cr>
@@ -689,7 +689,7 @@ set guitabtooltip=%{GuiTabToolTip()}
 set tabline=%!MyTabLine()
 
 "}}}1
-"  Whitespace function	 {{{1
+"  Functions	 {{{1
 "=========================================
 
 
@@ -742,6 +742,16 @@ function! ToggleShowWhitespace()
   endif
 endfunction
 
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
 nnoremap <Leader>ws :call ToggleShowWhitespace()<CR>
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+nnoremap <C-n> :call NumberToggle()<cr>
+
 "==========================================================}}}1
