@@ -1,9 +1,6 @@
 " VIMRC created by angelidis in 08/03/2007
 " updated on 
-" 6/23/2013 1:28:11 PM
-" 6/22/2013 8:27:59 PM
-" 3/19/2013 12:01:13 AM
-" 8/19/2012 11:10:15 AM
+" 6/29/2013 11:01:41 AM
 scriptencoding utf-8 "tell vim to read the file as UTF8 even if you're on a non-UTF system
 
 if has("win16") || has("win32") || has("win64")
@@ -13,10 +10,11 @@ endif
 set nocompatible
 "Pathogen Windows and Unix
 filetype off
+silent! execute pathogen#infect("~/vimfiles/stuff/{}")
+silent! execute pathogen#infect("~/vimfiles/bundle/{}")
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 filetype plugin indent on
-
 
 " OS Specific Settings  {{{1
 if has("win16") || has("win32") || has("win64")
@@ -24,7 +22,8 @@ if has("win16") || has("win32") || has("win64")
     cd C:\Users\angelidis\Documentz\txts
     let g:tagbar_ctags_bin ='C:\Users\angelidis\vimfiles\ctags\ctags.exe'
     let g:NERDTreeBookmarksFile="C:\\Users\\angelidis\\vimfiles\\NERDTreeBookmarks"
-    set directory+=$HOME/vimfiles/temp
+    set directory^=$HOME/vimfiles/tmp   "List of directory names for the swap file
+    set undodir^=$HOME/vimfiles/tmp
 "for unix
 else
     "path	list of directory names used for file searching
@@ -66,10 +65,11 @@ filetype plugin on
 filetype indent on
 syntax on "Turn on that syntax highlighting
 
-set gdefault "gdefault applies substitutions globally on lines
+set shiftround
+" set gdefault "gdefault applies substitutions globally on lines
 " set number "it's this or relative number
 set noautoindent
-" set undofile
+set undofile
 " let mapleader = ','
 let loaded_matchparen = 1 "turn off paren/parenthesis/whatever highlighting
 set spelllang=el,en
@@ -189,13 +189,20 @@ if !has("gui_running")
 endif
 
 "Font Settings
-if has("gui_running")
-    if has("win16") || has("win32") || has("win64") "for windows
+if (&t_Co > 2 || has("gui_running")) && has("syntax")
+    if exists("&guifont")
+      if has("mac")
+        set guifont=Monaco:h12
+      elseif has("unix")
+        if &guifont == ""
+          set guifont=Inconsolata\ 12,monospace\ 14
+        endif
+      elseif has("win32")
         set guifont=Consolas:h12:cGREEK
-    else "for unix
-        set guifont=Inconsolata\ 12,monospace\ 14
+      endif
     endif
 endif
+
 " }}}1
 "	Auto Commands {{{1
 if has("autocmd")
@@ -271,18 +278,19 @@ nmap <unique><F7> :NERDTreeToggle<CR>
 
 " map enter
 "nmap <CR> o<Esc>
+nnoremap Y  y$  " Make Y consistent with C and D.
+
+" CTRL + S to save current files
+noremap <silent> <C-S>          :update<CR>
+vnoremap <silent> <C-S>         <C-C>:update<CR>
+inoremap <silent> <C-S>         <C-O>:update<CR>
 
 "save from insert mode by pressing 0 in the numerical pad
 imap <kInsert> <ESC>:w<CR>
 map <kInsert> :w<CR>
 
 " Press Space to turn off highlighting and clear any message already displayed.
-:noremap <silent> <Space> :silent noh<Bar>echo<CR>
-
-" CTRL + S to save current files
-noremap <silent> <C-S>          :update<CR>
-vnoremap <silent> <C-S>         <C-C>:update<CR>
-inoremap <silent> <C-S>         <C-O>:update<CR>
+noremap <silent> <Space> :silent noh<Bar>echo<CR>
 
 " Navigating Long Lines [alt - arrows]
 map <A-DOWN> gj
@@ -375,6 +383,10 @@ noremap <silent> ,mj <C-W>J
 "}}}1
 "	Maps with Function Keys {{{1
 "=======================================
+
+map  <F1>   <Esc>
+map! <F1>   <Esc>
+map <C-F4>  :bdelete<CR>
 
 "appends the current date and time after the cursor
 map <F2> a<C-R>=strftime("%c")<CR><Esc>
@@ -473,9 +485,12 @@ tmenu <silent>&angelidis.Set\ Showmatch Revert to normal behaviour
 amenu angelidis.-SEP3- :
 amenu <silent>&angelidis.Auto\ Change\ Directory :set autochdir! <cr>
 tmenu <silent>&angelidis.Auto\ Change\ Directory Change the current working directory to the directory of the file in the buffer
-amenu &angelidis.Show\ Invisibles  : set list!<cr>
+amenu &angelidis.Show\ Invisibles  :set list!<cr>
 tmenu &angelidis.Show\ Invisibles  Display unprintable characters, like tab
 amenu <silent>&angelidis.Wrap :set wrap!<cr>
+amenu &angelidis.Enable\ Autoread  :setlocal autoread<cr>
+tmenu &angelidis.Enable\ Autoread  When a file has been detected to have been changed outside of Vim and it has not been changed inside of Vim, automatically read it again.
+	
 
 amenu angelidis.-SEP4- :
 amenu <silent>&angelidis.Dynamicaly\ Highlight\ Current\ Word :autocmd CursorMoved * silent! exe printf('match Search /\<%s\>/', expand('<cword>'))<cr>
@@ -753,5 +768,24 @@ endfunc
 nnoremap <Leader>ws :call ToggleShowWhitespace()<CR>
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 nnoremap <C-n> :call NumberToggle()<cr>
+
+function! OpenURL(url)
+  if has("win32")
+    exe "!start cmd /cstart /b ".a:url.""
+  elseif $DISPLAY !~ '^\w'
+    exe "silent !sensible-browser \"".a:url."\""
+  else
+    exe "silent !sensible-browser -T \"".a:url."\""
+  endif
+  redraw!
+endfunction
+command! -nargs=1 OpenURL :call OpenURL(<q-args>)
+" open URL under cursor in browser
+nnoremap gb :OpenURL <cfile><CR>
+nnoremap gA :OpenURL http://www.answers.com/<cword><CR>
+nnoremap gG :OpenURL http://www.google.com/search?q=<cword><CR>
+nnoremap gW :OpenURL http://en.wikipedia.org/wiki/Special:Search?search=<cword><CR>
+
+
 
 "==========================================================}}}1
