@@ -209,6 +209,7 @@ if has("autocmd")
     augroup mkd
     autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
     augroup END
+    autocmd FileType markdown colorscheme xoria256
 
     " ruby settings
     autocmd FileType ruby colorscheme railscasts
@@ -422,6 +423,8 @@ imap    <S-F11> <C-O><C-W>W
 
 "}}}1
 " Plugins Settings {{{1
+
+let g:markdown_folding = 1
 
 " CtrlP
 let g:ctrlp_map = '<c-p>'
