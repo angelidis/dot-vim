@@ -103,3 +103,12 @@
 [submodule "bundle/jellybeans"]
 	path = bundle/jellybeans
 	url = https://github.com/nanotech/jellybeans.vim
+[submodule "bundle/STL_Syntax"]
+	path = bundle/STL_Syntax
+	url = https://github.com/vim-scripts/STL-Syntax
+[submodule "bundle/blackboard-colorscheme"]
+	path = bundle/blackboard-colorscheme
+	url = https://github.com/nelstrom/vim-blackboard.git
+[submodule "bundle/python-mode"]
+	path = bundle/python-mode
+	url = https://github.com/klen/python-mode
