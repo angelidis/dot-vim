@@ -1,13 +1,13 @@
 " VIMRC created by angelidis in 08/03/2007
-" updated on 
-" 6/29/2013 11:01:41 AM
+" updated on
+" 8/6/2013 11:06:07 PM
 scriptencoding utf-8 "tell vim to read the file as UTF8 even if you're on a non-UTF system
 
 if has("win16") || has("win32") || has("win64")
     let $MYVIMRC='C:/Users/angelidis/vimfiles/vimrc'
 endif
 
-set nocompatible
+set nocompatible "Disable vi-compatibility
 "Pathogen Windows and Unix
 filetype off
 silent! execute pathogen#infect("~/vimfiles/stuff/{}")
@@ -20,10 +20,15 @@ filetype plugin indent on
 if has("win16") || has("win32") || has("win64")
     "default working directory
     cd C:\Users\angelidis\Documentz\txts
-    let g:tagbar_ctags_bin ='C:\Users\angelidis\vimfiles\ctags\ctags.exe'
+    let g:tagbar_ctags_bin ='C:\Users\angelidis\vimfiles\bin\ctags\ctags.exe'
     let g:NERDTreeBookmarksFile="C:\\Users\\angelidis\\vimfiles\\NERDTreeBookmarks"
-    set directory^=$HOME/vimfiles/tmp   "List of directory names for the swap file
-    set undodir^=$HOME/vimfiles/tmp
+    set backupdir^=$HOME/vimfiles/.cache/backup " backup directory
+    set directory^=$HOME/vimfiles/.cache/swap   " List of directory names for the swap file
+    if exists('+undofile')
+      set undofile
+      set undodir^=$HOME/vimfiles/.cache/undo
+      " set undodir^=$HOME/vimfiles/tmp
+    endif
 "for unix
 else
     "path	list of directory names used for file searching
@@ -36,13 +41,13 @@ endif
 
 " Settings - Unix
 "   executing external commands -- shell environment
-" TODO: Untested | Does it work with freebsd? 
+" TODO: Untested | Does it work with freebsd?
 if has("unix")
     set titlestring="angelidis's vim" "Terminal Settings
-	set shell=/bin/bash
-	set makeprg=make
-	"shellpipe	string used to put the output of ":make" in the error file
-	set sp=2>&1\|\ tee
+    set shell=/bin/bash
+    set makeprg=make
+    "shellpipe	string used to put the output of ":make" in the error file
+    set sp=2>&1\|\ tee
 endif
 
 "========================================================== }}}1
@@ -67,39 +72,44 @@ syntax on "Turn on that syntax highlighting
 
 set shiftround
 " set gdefault "gdefault applies substitutions globally on lines
-" set number "it's this or relative number
+set number "it's this or relative number
+" set relativenumber
+set numberwidth=1
 set noautoindent
-set undofile
 " let mapleader = ','
 let loaded_matchparen = 1 "turn off paren/parenthesis/whatever highlighting
 set spelllang=el,en
 set hidden
-set clipboard=unnamed
+" Writes to the unnamed register also writes to the * and + registers. This
+" makes it easy to interact with the system clipboard
+if has ('unnamedplus')
+  set clipboard=unnamedplus
+else
+  set clipboard=unnamed
+endif
 set printoptions=header:0,duplex:long,paper:letter  "Printing options
 set wrapscan  "set the search scan to wrap lines
 " set vb " set visual bell -- i hate that damned beeping
 " set visualbell t_vb=""  "disable both the visual error flash and the error beep
-set backspace=indent,eol,start whichwrap+=<,>,[,] "backspace and cursor keys wrap to previous/next line
+set backspace=indent,eol,start whichwrap+=<,>,[,] " backspace and cursor keys wrap to previous/next line
 set laststatus=2
-set history=100 "Keep some stuff in the history
-set scrolloff=4  "number of screen lines to show around the cursor
-set synmaxcol=2048 "Syntax coloring lines that are too long just slows down the world
-set showmode "At least let yourself know what mode you're in 
-set showcmd "show command line
+set history=100                                   " Keep some stuff in the history
+set scrolloff=4                                   " number of screen lines to show around the cursor
+set synmaxcol=2048                                " Syntax coloring lines that are too long just slows down the world
+set showmode                                      " At least let yourself know what mode you're in
+set showcmd                                       " show command line
 set cmdheight=3
 set nocursorline
 set nocursorcolumn
-set noinsertmode "don't use Insert mode as the default mode
+set noinsertmode                                  " don't use Insert mode as the default mode
 set nolazyredraw
-set wildmenu "Enable enhanced command-line completion
-set wildignorecase "Make it easier to complete buffers, open files, etc...
+set wildmenu                                      " Enable enhanced command-line completion
+set wildignorecase                                " Make it easier to complete buffers, open files, etc...
 " set wildmode=list:longest
 set ttyfast "Indicates a fast internet connection
 " Suffixes that get lower priority when doing tab completion for filenames.
 set suffixes=.bak,~,.swp,.o,.h,.obj,.info,.aux,.log,.dvi,.out,.toc,tags
 
-set numberwidth=1
-set relativenumber
 " Handle Long Lines
 set wrap         " long lines wrap
 set linebreak    " When wordwrap is on, don't break in the middle of words
@@ -145,38 +155,40 @@ set mousehide                   " Hide the mouse cursor when the user types
 set foldmethod=marker
 " These commands open folds
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
+set foldlevelstart=99 " open all folds initially
 
 "Back Up - Swap
 set noswapfile
 set nowritebackup
 set nobackup
-set backupext=.bak   "file name extension for the backup file
-set noautowrite "don't automatically write a file when leaving a modified buffer 
+set backupext=.bak " file name extension for the backup file
+set noautowrite    " don't automatically write a file when leaving a modified buffer
 
 "Session Settings
-set sessionoptions+=resize 
+set sessionoptions+=resize
 set sessionoptions+=slash
 set sessionoptions+=unix
-set sessionoptions+=winpos 
+set sessionoptions+=winpos
 
-set cino+=g0 
-set cino+=t0
-set cino+=/4 
-
-"let g:loaded_matchparen=1 
+"let g:loaded_matchparen=1
 if !has("gui_running")
-    set t_Co=256
+    set t_Co=256 " 256bit terminal
 endif
 
 if has("statusline")
     set statusline=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%{(&fenc\ ==\\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ [Format:%{&ff}]\ [FT:%Y]\ [%{&acd?'acd':'noacd'}]\ %{fugitive#statusline()}
 endif
+
+"new settings - Aug 2013
+" Always splits to the right and below
+set splitright
+set splitbelow
 "}}}1
 "gVim Settings {{{1
 :set guioptions-=T  "remove toolbar
 
 if has("gui_running")
-    colorscheme agge_dual
+    colorscheme Tomorrow
 endif
 
 "theme for console vim
@@ -184,8 +196,8 @@ endif
 " so set the background last.
 set t_Co=256
 if !has("gui_running")
-		colorscheme default
-		set background=light
+    colorscheme default
+    set background=light
 endif
 
 "Font Settings
@@ -198,7 +210,7 @@ if (&t_Co > 2 || has("gui_running")) && has("syntax")
           set guifont=Inconsolata\ 12,monospace\ 14
         endif
       elseif has("win32")
-        set guifont=Consolas:h12:cGREEK
+        set guifont=Consolas:h10:cGREEK
       endif
     endif
 endif
@@ -209,54 +221,51 @@ if has("autocmd")
     augroup mkd
     autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
     augroup END
-    autocmd FileType markdown colorscheme xoria256
+    autocmd FileType markdown colorscheme Tomorrow
 
     " ruby settings
     autocmd FileType ruby colorscheme railscasts
     autocmd FileType ruby set noacd
-    " C++ settings
-    autocmd FileType cpp set formatoptions-=cro "Disable automatic comment insertion
-    autocmd FileType cpp colorscheme railscasts
-    autocmd FileType cpp set foldmethod=syntax
-    autocmd FileType cpp set autoread
+
+    " C++ or cpp settings
+    " ftplugin directory
 
     "always highlight words same as current
     "autocmd CursorMoved * silent! exe printf('match Search /\<%s\>/', expand('<cword>'))
 
-    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-    autocmd FileType c set omnifunc=ccomplete#Complete
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 endif
 "	}}}1
-"	Maps : Used for programming {{{1
+" Maps and Current Bindings {{{1
 "==================================
 "see :help key-mapping
-"idea:
-"   ,b : buffer list
-"   ,f : filexplorer
-"   ,d : filexplorer
-"   ,t : terminal
-"   <Leader>P :Project
-"   <leader>fe : big file explorer
-"   <leader>f : big file explorer
-"   <leader>be : big buffer explorer (BufExplorer)
-"   <leader>b : big buffer explorer (BufExplorer)
-"   <Leader>bs  - Opens horizontally split window BufExplorer
-"   <Leader>bv  - Opens vertically split window BufExplorer
 
-"Windows & Unix
-    " let g:LustyJugglerAltTabMode = 1
-    " noremap <silent> <A-q> :LustyJuggler<CR>
-    " nmap  <silent> ,b :LustyJuggler<cr>
-    nmap  <silent> ,b :LustyBufferExplorer<cr>
-    nmap  <silent> ,g :LustyBufferGrep <cr>
-    nmap  <silent> ,f :LustyFilesystemExplorer<cr>
-    nmap  <silent> ,d :LustyFilesystemExplorer<cr>
-    nmap  <silent> ,r :LustyFilesystemExplorerFromHere<cr>
-    nmap <silent> <Leader>P :Project<CR>
+" TODO: convert commas to leaders
+"   ,f : filexplorer
+"   <C-o> : filexplorer
+"   ,b : buffer list
+"   ,r : recursive filexplorer
+"   ,m : most recent file list
+"   ,t : OS Terminal
+"   ,d : OS File Explorer (from directory)
+
+nnoremap ,f    :<C-u>Unite file<CR>
+nmap <silent> <unique> <Leader>fe :NERDTreeToggle<CR>
+nnoremap <C-o> :<C-u>Unite -no-start-insert file<CR>
+nnoremap ,b    :<C-u>Unite buffer<CR>
+nnoremap ,r    :<C-u>Unite file_rec/async<CR>
+nnoremap ,m    :<C-u>Unite file_mru<CR>
+
+" TODO: Fix for unix case
+if has("win16") || has("win32") || has("win64")
+    nnoremap ,t :call system("start cmd")<CR> " open cmd.exe at current directory
+    nnoremap ,d :call OpenPathInExplorer()<CR>
+endif
 
 "TODO: tested only on linux
 if has("unix")
@@ -269,16 +278,8 @@ endif
 
 " Tagbar [F9]
 nnoremap <F9> :TagbarToggle<CR>
-" :CommandT
-map <C-t> :CommandT<CR>
-nmap <silent> <unique> <Leader>fe :NERDTreeToggle<CR> 
 nmap <unique><F7> :NERDTreeToggle<CR>
-"}}}1
-" Maps and Current Bindings {{{1
-"=======================================
 
-" map enter
-"nmap <CR> o<Esc>
 nnoremap Y  y$  " Make Y consistent with C and D.
 
 " CTRL + S to save current files
@@ -289,6 +290,12 @@ inoremap <silent> <C-S>         <C-O>:update<CR>
 "save from insert mode by pressing 0 in the numerical pad
 imap <kInsert> <ESC>:w<CR>
 map <kInsert> :w<CR>
+
+" _ : Quick horizontal splits
+nnoremap _ :sp<cr>
+
+" | : Quick vertical splits
+nnoremap <bar> :vsp<cr>
 
 " Press Space to turn off highlighting and clear any message already displayed.
 noremap <silent> <Space> :silent noh<Bar>echo<CR>
@@ -313,7 +320,7 @@ map <C-left> <ESC>:bp<CR>
 " imap <S-left> <ESC><C-W><Left><CR>
 " imap <S-up> <ESC><C-W><Up><CR>
 " imap <S-down> <ESC><C-W><Down><CR>
-" 
+"
 " map <S-right> <C-W><Right>
 " map <S-left> <C-W><Left>
 " map <S-up> <C-W><Up>
@@ -385,8 +392,18 @@ noremap <silent> ,mj <C-W>J
 "	Maps with Function Keys {{{1
 "=======================================
 
-map  <F1>   <Esc>
-map! <F1>   <Esc>
+" <F1>: Help
+" nmap <F1> [unite]h
+
+" <F2>: Open Vimfiler
+
+" <F3>: Gundo
+nnoremap <F3> :UndotreeToggle<cr>
+
+" <F4>: Save session
+nnoremap <F4> :<C-u>UniteSessionSave
+
+" <C-F4>
 map <C-F4>  :bdelete<CR>
 
 "appends the current date and time after the cursor
@@ -394,7 +411,7 @@ map <F2> a<C-R>=strftime("%c")<CR><Esc>
 
 "guioptions-=m  "remove menu bar
 "set guioptions-=T  "remove toolbar
-"Toggle Toolbar in gvim: Ctrl-F1 
+"Toggle Toolbar in gvim: Ctrl-F1
 map <silent> <C-F1> :if &guioptions =~# 'T'         <Bar>
                              \set guioptions-=T     <Bar>
                        \else <Bar>
@@ -426,10 +443,6 @@ imap    <S-F11> <C-O><C-W>W
 
 let g:markdown_folding = 1
 
-" CtrlP
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cache_dir = $HOME.'/vimfiles/ctrlp_cache'
-
 "netrw
 " check the mappings/shortcut section for shortcuts
 let g:netrw_listhide="\.ico$,\.png$,\.jpg$,\^\..*"
@@ -438,7 +451,7 @@ let g:netrw_sort_sequence="[\/]$,\.h$,\.c$,\.cpp$,\.css,\.html,*,\.o$,\.obj$,\.i
 "NERDTree
 let NERDTreeHijackNetrw=0
 let NERDTreeShowHidden=1 "don't show hidden files
-let NERDTreeWinPos="right"
+let NERDTreeWinPos="left"
 let NERDTreeDirArrows=1
 let NERDTreeShowBookmarks=1 " Show the bookmarks table on startup
 let NERDChristmasTree           = 1
@@ -448,42 +461,92 @@ let NERDTreeShowLineNumbers     = 0
 let NERDTreeWinSize             = 50
 let NERDTreeShowFiles           = 1
 let NERDTreeHighlightCursorline = 0
-let NERDTreeSortOrder=['\/$', '\.txt$' ,'\.vim$','\.c$', '\.h$', '\.py$','\.pyc$', '*', '\.swp$',  '\.bak$', '\~$']
-let NERDTreeIgnore              = [] "specify which files the NERD tree should ignore.
-
+let NERDTreeSortOrder           = ['\/$', '\.txt$' ,'\.vim$','\.c$', '\.h$', '\.py$','\.pyc$', '*', '\.swp$',  '\.bak$', '\~$']
 " Don't display these kinds of files
 let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
                    \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
                    \ '\.embed\.manifest$', '\.embed\.manifest.res$',
+                   \ '\.exe$','\.pdf$','\.db$','\.docx$',
                    \ '\.intermediate\.manifest$', '^mt.dep$' ]
 
-"Plugin:	Project
-if has("win32") || has("mac")
-    let g:proj_flags='imst'             " Project default flags for windows/mac
-else
-    let g:proj_flags='imstb'            " Project default flags for everything else
-    "TODO:den leitougoun sosta
-    "Project Plugin
-    let g:proj_run3='silent !gvim %f'
-    let g:proj_run3='silent !nautilus %:d:h'
+"Plugin:    Unite
+" Use ag for search
+if executable('ag')
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+    let g:unite_source_grep_recursive_opt = ''
 endif
-"let g:proj_window_width = 35
+
+" Silver Searcher aka ag
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+    set grepformat=%f:%l:%c:%m
+endif
+
+" Tagbar
+let g:tagbar_type_markdown = {
+            \ 'ctagstype' : 'markdown',
+            \ 'kinds' : [
+            \ 'h:Heading_L1',
+            \ 'i:Heading_L2',
+            \ 'k:Heading_L3'
+            \ ]
+            \ }
+" https://github.com/majutsushi/tagbar/wiki#r
+let g:tagbar_type_r = {
+    \ 'ctagstype' : 'r',
+    \ 'kinds'     : [
+        \ 'f:Functions',
+        \ 'g:GlobalVariables',
+        \ 'v:FunctionVariables',
+    \ ]
+\ }
+
+" indentLine
+let g:indentLine_enabled=0 " for performance reasons
+
+" Python mode
+let g:pymode_breakpoint_key = '<Leader>b'
+let g:pymode_lint_checker = 'pylint,pep8,mccabe,pep257'
+let g:pymode_lint_ignore = ''
+let g:pymode_lint_config = $HOME.'/dotfiles/pylint/pylint.rc'
+let g:pymode_rope = 0
+" Load run code plugin
+let g:pymode_run = 0
+
+let g:pymode_folding = 0 "disable folding
+let g:pymode_virtualenv = 0
+let g:pymode_syntax = 1
+
+" gitgutter
+let g:gitgutter_enabled = 0
+let g:gitgutter_realtime = 0
+
+" TODO: make path universal for both Windows and Linux
+" let g:unite_data_directory=$HOME.'/vimfiles/.cache/unite'
+let g:unite_data_directory='~/vimfiles/.cache/unite'
+let g:vimfiler_data_directory='~/vimfiles/.cache/vimfiler'
+let g:unite_enable_start_insert=1
+let g:unite_source_history_yank_enable=1
+let g:unite_source_rec_max_cache_files=5000
+"TODO: fix this
+let g:agprg="C:/Users/angelidis/vimfiles/bin/ag/ag.exe --column"
+
+
 "}}}1
-"	gVim - Menus [gvim] {{{1
+"	Menus [gvim] {{{1
 "angelidis menu {{{2
 amenu angelidis.-SEP- :
 amenu <silent>&angelidis.Bottom\ Scrollbars.Enable :set guioptions+=b<cr>
 amenu <silent>&angelidis.Bottom\ Scrollbars.Disable :set guioptions-=b<cr>
 
 amenu angelidis.-SEP2- :
-amenu <silent>&angelidis.monospace-bold12 :set guifont=monospace\ Bold\ 12<cr>
-amenu <silent>&angelidis.monospace12    :set guifont=monospace\ 12<cr>
 amenu <silent>&angelidis.Set\ Background\ To\ Dark    :set background=dark<cr>
 amenu <silent>&angelidis.Set\ Background\ To\ Light    :set background=light<cr>
 amenu <silent>&angelidis.Set\ Showmatch :set showmatch<cr>
 tmenu <silent>&angelidis.Set\ Showmatch When a bracket is inserted, briefly jump to the matching one
 amenu <silent>&angelidis.Disable\ Showmatch :set noshowmatch<cr>
-tmenu <silent>&angelidis.Set\ Showmatch Revert to normal behaviour
+tmenu <silent>&angelidis.Disable\ Showmatch Revert to normal behaviour
 
 amenu angelidis.-SEP3- :
 amenu <silent>&angelidis.Auto\ Change\ Directory :set autochdir! <cr>
@@ -493,7 +556,7 @@ tmenu &angelidis.Show\ Invisibles  Display unprintable characters, like tab
 amenu <silent>&angelidis.Wrap :set wrap!<cr>
 amenu &angelidis.Enable\ Autoread  :setlocal autoread<cr>
 tmenu &angelidis.Enable\ Autoread  When a file has been detected to have been changed outside of Vim and it has not been changed inside of Vim, automatically read it again.
-	
+
 
 amenu angelidis.-SEP4- :
 amenu <silent>&angelidis.Dynamicaly\ Highlight\ Current\ Word :autocmd CursorMoved * silent! exe printf('match Search /\<%s\>/', expand('<cword>'))<cr>
@@ -520,18 +583,53 @@ amenu &angelidis.Delete\ All\ Spaces  :%s/[ ^I]//g<CR>
 tmenu &angelidis.Delete\ All\ Spaces  Deletes spaces from the buffer
 
 " Change between backslash and forward slash
-" From <http://vim.wikia.com/wiki/VimTip431> 
+" From <http://vim.wikia.com/wiki/VimTip431>
 " Putting the current file on the Windows clipboard
-" From <http://vim.wikia.com/wiki/VimTip432> 
+" From <http://vim.wikia.com/wiki/VimTip432>
 " Save each line in separate numbered files
-" From <http://vim.wikia.com/wiki/VimTip1059> 
+" From <http://vim.wikia.com/wiki/VimTip1059>
 
 "}}}2
+"angelidis2 menu {{{2
+
+amenu <silent>angelidis2.Align\ To\ First\ Equal : '<,'>Tabularize 1=<cr>
+tmenu <silent>angelidis2.Align\ To\ First\ Equal Align only the first equal, useful in languages like R
+
+amenu <silent>angelidis2.Refresh\ Syntax :syntax sync fromstart
+tmenu <silent>angelidis2.Refresh\ Syntax Refresh syntax highlighting, starting from start
+
+amenu <silent>angelidis2.Replace\ ^M :%s/\r//g<cr>
+tmenu <silent>angelidis2.Replace\ ^M Replace ^M in the whole buffer
+"
+" from http://vim.wikia.com/wiki/Remove_unwanted_spaces
+amenu <silent>angelidis2.Delete\ All\ Trailing\ Whitespace :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+tmenu <silent>angelidis2.Delete\ All\ Trailing\ Whitespace Delete All Trailing Whitespace
+
+amenu <silent>angelidis2.Open\ File\ in\ Explorer :call OpenPathInExplorer()<cr>
+tmenu <silent>angelidis2.Open\ File\ in\ Explorer Open the current file in windows explorer
+"}}}2
 "Plugins menu {{{2
+amenu Plugins.Undotree  :UndotreeToggle<cr>
+tmenu Plugins.Undotree Toggle Undotree plugin
 amenu Plugins.DelimitMate  :DelimitMateSwitch<cr>
-amenu Plugins.NerdTree\ F7  :NERDTreeToggle<cr>
-amenu Plugins.Tagbar\ F9  :TagbarToggle<cr>
-amenu Plugins.Project\ L-P  :Project<cr>
+tmenu Plugins.DelimitMate Toggle DelimitMate plugin
+amenu Plugins.Tagbar<Tab>F9  :TagbarToggle<cr>
+tmenu Plugins.Tagbar<Tab>F9 Toggle Tagbar plugin
+
+amenu Plugins.-SEP- :
+amenu Plugins.NerdTree<Tab>F7  :NERDTreeToggle<cr>
+tmenu Plugins.NerdTree<Tab>F7 Toggle NERDTree plugin
+amenu Plugins.NerdTree\ Find<Tab>F8  :NERDTreeFind<cr>
+tmenu Plugins.NerdTree\ Find<Tab>F8 Find the current file in the tree.
+amenu Plugins.-SEP2- :
+amenu <silent>Plugins.GitGutterToggle :GitGutterToggle<cr>
+tmenu <silent>Plugins.GitGutterToggle Explicitly turn Git Gutter on if it was off and vice versa.
+
+amenu <silent>Plugins.GitGutter :GitGutter<cr>
+tmenu <silent>Plugins.GitGutter Update signs for the current buffer.
+
+amenu <silent>Plugins.GitGutterLineHighlightsToggle :GitGutterLineHighlightsToggle<cr> 
+tmenu <silent>Plugins.GitGutterLineHighlightsToggle Explicitly turn line highlighting on if it was off and vice versa.
 "}}}2
 "Encoding menu {{{2
 amenu &Encoding.Encode\ in\ UTF-8\ without\ BOM :e ++enc=utf-8<cr>
@@ -658,47 +756,47 @@ endfunction
 
 "Used with console vim
 function! MyTabLine() "{{{2
-	let s = ''
-	for i in range(tabpagenr('$'))
-	" select the highlighting
-	if i + 1 == tabpagenr()
-	let s .= '%#TabLineSel#'
-	else
-	let s .= '%#TabLine#'
-	endif
+    let s = ''
+    for i in range(tabpagenr('$'))
+        " select the highlighting
+        if i + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
 
-	" set the tab page number (for mouse clicks)
-	let s .= '%' . (i + 1) . 'T'
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (i + 1) . 'T'
 
-	" the label is made by MyTabLabel()
-	let s .= ' %{MyTabLabel(' . (i + 1) . ')} |'
-	endfor
+        " the label is made by MyTabLabel()
+        let s .= ' %{MyTabLabel(' . (i + 1) . ')} |'
+    endfor
 
-	" after the last tab fill with TabLineFill and reset tab page nr
-	let s .= '%#TabLineFill#%T'
+    " after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill#%T'
 
-	" right-align the label to close the current tab page
-	if tabpagenr('$') > 1
-	let s .= '%=%#TabLine#%999X X'
-	endif
+    " right-align the label to close the current tab page
+    if tabpagenr('$') > 1
+        let s .= '%=%#TabLine#%999X X'
+    endif
 
-	"echomsg 's:' . s
-	return s
+    "echomsg 's:' . s
+    return s
 endfunction
 
 function! MyTabLabel(n)
-	let buflist = tabpagebuflist(a:n)
-	let winnr = tabpagewinnr(a:n)
-	let numtabs = tabpagenr('$')
-	" account for space padding between tabs, and the "close" button
-	let maxlen = ( &columns - ( numtabs * 2 ) - 4 ) / numtabs
-	let tablabel = bufname(buflist[winnr - 1])
-	while strlen( tablabel ) < 4
-	let tablabel = tablabel . " "
-	endwhile
-	let tablabel = fnamemodify( tablabel, ':t' )
-	let tablabel = strpart( tablabel, 0, maxlen )
-	return tablabel
+    let buflist = tabpagebuflist(a:n)
+    let winnr = tabpagewinnr(a:n)
+    let numtabs = tabpagenr('$')
+    " account for space padding between tabs, and the "close" button
+    let maxlen = ( &columns - ( numtabs * 2 ) - 4 ) / numtabs
+    let tablabel = bufname(buflist[winnr - 1])
+    while strlen( tablabel ) < 4
+        let tablabel = tablabel . " "
+    endwhile
+    let tablabel = fnamemodify( tablabel, ':t' )
+    let tablabel = strpart( tablabel, 0, maxlen )
+    return tablabel
 endfunction
 "}}}2
 
@@ -766,7 +864,7 @@ function! NumberToggle()
   else
     set relativenumber
   endif
-endfunc
+endfunction
 
 nnoremap <Leader>ws :call ToggleShowWhitespace()<CR>
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
@@ -783,6 +881,8 @@ function! OpenURL(url)
   redraw!
 endfunction
 command! -nargs=1 OpenURL :call OpenURL(<q-args>)
+
+" TODO:
 " open URL under cursor in browser
 nnoremap gb :OpenURL <cfile><CR>
 nnoremap gA :OpenURL http://www.answers.com/<cword><CR>
@@ -790,5 +890,26 @@ nnoremap gG :OpenURL http://www.google.com/search?q=<cword><CR>
 nnoremap gW :OpenURL http://en.wikipedia.org/wiki/Special:Search?search=<cword><CR>
 
 
+" Open current file in Explorer (simple version)
+function OpenPathInExplorer()
+    " let filepath=expand('%:p')
+    let filepath=substitute(expand("%:p"), '/', '\', 'g')
+    " :exe '!start explorer.exe /select,"' . filepath . '" | redraw'
+    :exe '!start explorer.exe /select,"' . filepath . '"'
+endfunction
 
 "==========================================================}}}1
+
+
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+let g:unite_source_history_yank_enable = 1
+
+
+imap <M-d> <ESC>ldiwi
+imap <M-d> <ESC>ldwa
+
+if has('python3')
+    autocmd FileType python setlocal omnifunc=python3complete#Complete
+else
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+endif
