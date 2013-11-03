@@ -884,6 +884,7 @@ endfunction
 
 "==========================================================}}}1
 
+" Unite Configuration
 "Plugin:    Unite
 if has("win16") || has("win32") || has("win64")
     let g:unite_data_directory='~/vimfiles/.cache/unite'
@@ -894,17 +895,27 @@ endif
 if has("unix")
     let g:unite_data_directory='~/.vim/.cache/unite'
     let g:vimfiler_data_directory='~/.vim/.cache/vimfiler'
+    " let g:unite_source_bookmark_directory 
     " You can use Ag with ack.vim by adding the following line to your .vimrc:
     let g:ackprg = 'ag --nogroup --nocolor --column'
 endif
 
-" Use ag for search
 if executable('ag')
+    " Use ag in unite grep source.
     let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+    let g:unite_source_grep_default_opts =
+                \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
+                \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
     let g:unite_source_grep_recursive_opt = ''
     let g:unite_source_grep_search_word_highlight = 1
+elseif executable('ack-grep')
+    " Use ack in unite grep source.
+    let g:unite_source_grep_command = 'ack-grep'
+    let g:unite_source_grep_default_opts =
+                \ '--no-heading --no-color -a -H'
+    let g:unite_source_grep_recursive_opt = ''
 endif
+
 
 " Silver Searcher aka ag -- it needs to be in the path
 if executable('ag')
