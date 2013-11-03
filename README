@@ -1,0 +1,65 @@
+Installation:
+
+    git clone git:// ...
+
+Unix - Create symlinks:
+
+    ln -s ~/dotfiles/vimrc  ~/.vimrc
+    ln -s ~/dotfiles/gvimrc  ~/.gvimrc
+
+To setup a new machine you do:
+
+    cd ~
+    git clone http://github.com/dudarev/dotvim.git ~/.vim
+    ln -s ~/.vim/vimrc ~/.vimrc
+    ln -s ~/.vim/gvimrc ~/.gvimrc
+    cd ~/.vim
+    git submodule init
+    git submodule update
+    Plugins are included as git sub
+
+To add a new submodule:
+
+    git submodule add http://github.com/tpope/vim-fugitive.git bundle/fugitive
+    git add .
+    git commit -m "Install Fugitive.vim bundle as a submodule."
+
+To upgrade all plugins:
+
+    git submodule foreach git pull origin master
+
+command! Status echo "all systems are go!"
+
+
+
+git submodule add https://github.com/vim-scripts/STL-Syntax bundle/STL_Syntax
+
+Push an existing repository from the command line
+
+git remote add origin https://github.com/angelidis/dot-vim.git
+git push -u origin master
+
+# Plugins I am not using anymore
+vim project plugin
+
+
+# git
+git rm ctags/ -r
+
+
+# Plugins to add:
+terryma/vim-multiple-cursors
+
+
+"Plugin:	Project
+if has("win32") || has("mac")
+    let g:proj_flags='imst'             " Project default flags for windows/mac
+else
+    let g:proj_flags='imstb'            " Project default flags for everything else
+    "TODO:den leitougoun sosta
+    "Project Plugin
+    let g:proj_run3='silent !gvim %f'
+    let g:proj_run3='silent !nautilus %:d:h'
+endif
+"let g:proj_window_width = 35
+
