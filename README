@@ -30,8 +30,9 @@ To upgrade all plugins:
 
 command! Status echo "all systems are go!"
 
-
-
+#
+#
+#
 git submodule add https://github.com/vim-scripts/STL-Syntax bundle/STL_Syntax
 
 Push an existing repository from the command line
@@ -62,4 +63,149 @@ else
     let g:proj_run3='silent !nautilus %:d:h'
 endif
 "let g:proj_window_width = 35
+
+
+
+#
+# Temp
+#
+" Navigating Long Lines [alt - arrows]
+map <A-DOWN> gj
+map <A-UP> gk
+imap <A-UP> <ESC>gki
+imap <A-DOWN> <ESC>gji
+" Cursor keys use screen lines
+map <up> gk
+imap <up> <c-o>gk
+map <down> gj
+imap <down> <c-o>gj
+http://www.cs.mcgill.ca/~kwysoc/vimrc
+
+
+#
+# Links
+#
+http://vimcasts.org/episodes/synchronizing-plugins-with-git-submodules-and-pathogen/
+http://rmitc.org/2013/04/modern-vim-plugin-management-pathogen-vs-vundle/
+https://github.com/tpope/vim-obsession
+git://github.com/tpope/vim-obsession.git
+https://github.com/spolu/dwm.vim
+
+git add .
+
+git commit -m "Installed tabular as a submodule."
+
+$ git submodule init && git submodule update
+https://github.com/Lokaltog/powerline
+http://www.fsd.it/fonts/pragmatapro.htm#.Uc8ob_kyZLU
+
+#
+# Colorschemes
+#
+
+https://github.com/tpope/vim-vividchalk
+git submodule add https://github.com/tpope/vim-vividchalk bundle/vim-vividchalk	
+git submodule add git://github.com/Lokaltog/vim-distinguished.git bundle/color_distinguished
+git submodule add git://github.com/altercation/vim-colors-solarized.git bundle/solarized
+https://github.com/zeis/vim-kolor
+https://github.com/morhetz/gruvbox
+
+#
+# Plugins
+#
+git submodule add https://github.com/nelstrom/vim-markdown-folding.git bundle/vim-markdown-folding
+git submodule add git://github.com/kien/ctrlp.vim.git bundle/ctrlp
+git submodule add git://github.com/tpope/vim-markdown.git bundle/vim-markdown
+git submodule add git://github.com/scrooloose/nerdtree.git bundle/nerdtree
+git submodule add git://github.com/majutsushi/tagbar.git bundle/tagbar
+git submodule add git://github.com/tpope/vim-surround.git bundle/vim-surround
+git submodule add git://github.com/vim-scripts/UltiSnips.git bundle/utilsnips
+git submodule add git://github.com/godlygeek/tabular.git bundle/tabular
+git submodule add git://github.com/Raimondi/delimitMate.git bundle/delmitmate
+git submodule add git://github.com/docunext/closetag.vim.git bundle/closetag
+git submodule add git://github.com/tomtom/tcomment_vim.git bundle/tcomment_vim
+git submodule add git://github.com/Raimondi/delimitMate.git bundle/delimitMate
+git submodule add https://github.com/klen/python-mode bundle/python-mode	
+
+
+git submodule add https://github.com/airblade/vim-gitgutter bundle/vim-gitgutter
+git submodule add https://github.com/rking/ag.vim bundle/ag
+git submodule add https://github.com/Shougo/vimfiler.vim bundle/vimfiler
+git submodule add https://github.com/nanotech/jellybeans.vim bundle/jellybeans
+
+git submodule add https://github.com/mbbill/undotree bundle/undotree
+git submodule add https://github.com/bling/vim-airline bundle/vim-airline
+git submodule add https://github.com/Shougo/unite.vim bundle/unite
+git submodule add https://github.com/Yggdroot/indentLine bundle/indentLine
+git submodule add https://github.com/Shougo/vimproc.vim bundle/vimproc
+
+git submodule add https://github.com/nelstrom/vim-blackboard.git bundle/blackboard-colorscheme
+https://github.com/scrooloose/syntastic
+unimpaired
+surround
+ 
+# On Windows:
+UseVimball C:/Users/angelidis/vimfiles/bundle/netrw147
+http://stackoverflow.com/questions/3767046/vim-recommendations-for-vimball-plugins-in-pathogen
+
+You are looking for :UseVimball [path]
+
+Open the vimball up with vim. Instead of sourcing it with :so % do
+
+$ vim somthing.vba
+:!mkdir ~/.vim/bundle/bundle-dir-name-here
+:UseVimball ~/.vim/bundle/bundle-dir-name-here
+Note you will have to make sure the path exists before you execute this command.
+
+:h :UseVimball
+
+colorscheme for console
+https://code.google.com/p/conemu-maximus5/wiki/Xterm256Colors
+http://stackoverflow.com/questions/12913392/cant-enable-256-colors-in-conemu
+http://stackoverflow.com/questions/14315519/conemu-vim-syntax-highlight
+
+
+http://www.vimninjas.com/2012/08/26/10-vim-color-schemes-you-need-to-own/ 	
+
+
+http://stackoverflow.com/questions/1402776/how-do-i-commit-all-deleted-files-in-git
+
+http://stackoverflow.com/questions/492558/removing-multiple-files-from-a-git-repo-that-have-already-been-deleted-from-disk
+
+http://stackoverflow.com/questions/1402776/how-do-i-commit-all-deleted-files-in-git/8277826#8277826
+
+fix tcomment
+http://stackoverflow.com/questions/4716810/tcomment-vs-the-nerd-commenter
+https://github.com/tomtom/tcomment_vim/blob/master/doc/tcomment.txt
+
+Vim Fugitive
+============
+https://github.com/tpope/vim-fugitive/issues/9
+http://stackoverflow.com/questions/2932399/error-using-the-gdiff-command-of-fugitive-vim-using-gvim-for-windows-and-msys-g
+
+In the quickfix window, you can use:
+
+o    to open (same as enter)
+go   to preview file (open but maintain focus on ag.vim results)
+t    to open in new tab
+T    to open in new tab silently
+h    to open in horizontal split
+H    to open in horizontal split silently
+v    to open in vertical split
+gv   to open in vertical split silently
+q    to close the quickfix window
+
+# Vimproc
+
+1. install minigw
+2. find your shell: C:\MinGW\msys\1.0\msys.bat
+3. make -f make_mingw32.mak
+
+Git Gutter
+
+
+# Vim project
+" amenu Plugins.Project<Tab>L-P  :Project<cr>
+" tmenu Plugins.Project<Tab>L-P Toggle Project plugin
+
 
