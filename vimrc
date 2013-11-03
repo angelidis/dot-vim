@@ -1,20 +1,24 @@
 " VIMRC created by angelidis in 08/03/2007
 " updated on
-" 8/6/2013 11:06:07 PM
+" Mon 28 Oct 2013 08:11:52 PM EDT
+
 scriptencoding utf-8 "tell vim to read the file as UTF8 even if you're on a non-UTF system
-
-if has("win16") || has("win32") || has("win64")
-    let $MYVIMRC='C:/Users/angelidis/vimfiles/vimrc'
-endif
-
 set nocompatible "Disable vi-compatibility
+
 "Pathogen Windows and Unix
 filetype off
-silent! execute pathogen#infect("~/vimfiles/stuff/{}")
-silent! execute pathogen#infect("~/vimfiles/bundle/{}")
+if has("win16") || has("win32") || has("win64")
+    let $MYVIMRC='C:/Users/angelidis/vimfiles/vimrc'
+    silent! execute pathogen#infect("~/vimfiles/stuff/{}")
+    " silent! execute pathogen#infect('~/vimfiles/stuff/{}', '~/vimfiles/bundle/{}')
+else
+    let $MYVIMRC='~/.vim/vimrc'
+    silent! execute pathogen#infect("~/.vim/stuff/{}")
+endif
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
-filetype plugin indent on
+" delete
+" filetype plugin indent on
 
 " OS Specific Settings  {{{1
 if has("win16") || has("win32") || has("win64")
@@ -29,20 +33,23 @@ if has("win16") || has("win32") || has("win64")
       set undodir^=$HOME/vimfiles/.cache/undo
       " set undodir^=$HOME/vimfiles/tmp
     endif
-"for unix
-else
-    "path	list of directory names used for file searching
-    set path=.,/usr/include,,
-    set vdir=$HOME/.vim/view
-    set dir=$HOME/.vim/Swap
-    set backupdir=$HOME/.vim/Backup
-    let NERDTreeBookmarksFile="$HOME/.vim/.NERDTreeBookmarks"
 endif
 
 " Settings - Unix
-"   executing external commands -- shell environment
-" TODO: Untested | Does it work with freebsd?
 if has("unix")
+    "path	list of directory names used for file searching
+    set path=.,/usr/include,,
+    set vdir^=~/.vim/.cache/view
+    set backupdir^=~/.vim/.cache/backup " backup directory
+    set directory^=~/.vim/.cache/swap   " List of directory names for the swap file
+    if exists('+undofile')
+      set undofile
+      set undodir^=~/.vim/.cache/undo
+    endif
+    let NERDTreeBookmarksFile="$HOME/.vim/.NERDTreeBookmarks"
+
+    "   executing external commands -- shell environment
+    " TODO: Untested | Does it work with freebsd?
     set titlestring="angelidis's vim" "Terminal Settings
     set shell=/bin/bash
     set makeprg=make
@@ -54,7 +61,6 @@ endif
 "Vim - Settings {{{1
 
 "Encoding Settings
-"TODO: tested only on windows
 if has("multi_byte")
   if &termencoding == ""
     let &termencoding = &encoding
@@ -109,6 +115,10 @@ set wildignorecase                                " Make it easier to complete b
 set ttyfast "Indicates a fast internet connection
 " Suffixes that get lower priority when doing tab completion for filenames.
 set suffixes=.bak,~,.swp,.o,.h,.obj,.info,.aux,.log,.dvi,.out,.toc,tags
+
+" Always splits to the right and below
+set splitright
+set splitbelow
 
 " Handle Long Lines
 set wrap         " long lines wrap
@@ -179,12 +189,6 @@ if has("statusline")
     set statusline=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%{(&fenc\ ==\\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ [Format:%{&ff}]\ [FT:%Y]\ [%{&acd?'acd':'noacd'}]\ %{fugitive#statusline()}
 endif
 
-"new settings - Aug 2013
-" Always splits to the right and below
-set splitright
-set splitbelow
-"}}}1
-"gVim Settings {{{1
 :set guioptions-=T  "remove toolbar
 
 if has("gui_running")
@@ -196,7 +200,8 @@ endif
 " so set the background last.
 set t_Co=256
 if !has("gui_running")
-    colorscheme default
+    " colorscheme default
+    colorscheme xoria256
     set background=light
 endif
 
@@ -267,9 +272,8 @@ if has("win16") || has("win32") || has("win64")
     nnoremap ,d :call OpenPathInExplorer()<CR>
 endif
 
-"TODO: tested only on linux
 if has("unix")
-    nmap  <silent> ,n :silent !nautilus "%:p:h"<cr>
+    nmap  <silent> ,d :silent !nautilus "%:p:h"<cr>
     nmap  <silent> ,t :silent !gnome-terminal& --working-directory="%:p:h"<cr>
     "" nmap  <silent> ,r :silent !terminator& --maximise --working-directory="%:p:h"<cr>
     " Make the current file executable
@@ -469,19 +473,6 @@ let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
                    \ '\.exe$','\.pdf$','\.db$','\.docx$',
                    \ '\.intermediate\.manifest$', '^mt.dep$' ]
 
-"Plugin:    Unite
-" Use ag for search
-if executable('ag')
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-    let g:unite_source_grep_recursive_opt = ''
-endif
-
-" Silver Searcher aka ag
-if executable('ag')
-    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
-    set grepformat=%f:%l:%c:%m
-endif
 
 " Tagbar
 let g:tagbar_type_markdown = {
@@ -521,17 +512,6 @@ let g:pymode_syntax = 1
 " gitgutter
 let g:gitgutter_enabled = 0
 let g:gitgutter_realtime = 0
-
-" TODO: make path universal for both Windows and Linux
-" let g:unite_data_directory=$HOME.'/vimfiles/.cache/unite'
-let g:unite_data_directory='~/vimfiles/.cache/unite'
-let g:vimfiler_data_directory='~/vimfiles/.cache/vimfiler'
-let g:unite_enable_start_insert=1
-let g:unite_source_history_yank_enable=1
-let g:unite_source_rec_max_cache_files=5000
-"TODO: fix this
-let g:agprg="C:/Users/angelidis/vimfiles/bin/ag/ag.exe --column"
-
 
 "}}}1
 "	Menus [gvim] {{{1
@@ -607,6 +587,10 @@ tmenu <silent>angelidis2.Delete\ All\ Trailing\ Whitespace Delete All Trailing W
 
 amenu <silent>angelidis2.Open\ File\ in\ Explorer :call OpenPathInExplorer()<cr>
 tmenu <silent>angelidis2.Open\ File\ in\ Explorer Open the current file in windows explorer
+
+amenu <silent>angelidis2.Fix\ Syntax\ Highlighting :syntax sync fromstart<cr>
+tmenu <silent>angelidis2.Fix\ Syntax\ Highlighting Fix syntax highlighting
+
 "}}}2
 "Plugins menu {{{2
 amenu Plugins.Undotree  :UndotreeToggle<cr>
@@ -628,7 +612,7 @@ tmenu <silent>Plugins.GitGutterToggle Explicitly turn Git Gutter on if it was of
 amenu <silent>Plugins.GitGutter :GitGutter<cr>
 tmenu <silent>Plugins.GitGutter Update signs for the current buffer.
 
-amenu <silent>Plugins.GitGutterLineHighlightsToggle :GitGutterLineHighlightsToggle<cr> 
+amenu <silent>Plugins.GitGutterLineHighlightsToggle :GitGutterLineHighlightsToggle<cr>
 tmenu <silent>Plugins.GitGutterLineHighlightsToggle Explicitly turn line highlighting on if it was off and vice versa.
 "}}}2
 "Encoding menu {{{2
@@ -900,9 +884,49 @@ endfunction
 
 "==========================================================}}}1
 
+"Plugin:    Unite
+if has("win16") || has("win32") || has("win64")
+    let g:unite_data_directory='~/vimfiles/.cache/unite'
+    let g:vimfiler_data_directory='~/vimfiles/.cache/vimfiler'
+    let g:agprg="C:/Users/angelidis/vimfiles/bin/ag/ag.exe --column"
+endif
 
+if has("unix")
+    let g:unite_data_directory='~/.vim/.cache/unite'
+    let g:vimfiler_data_directory='~/.vim/.cache/vimfiler'
+    " You can use Ag with ack.vim by adding the following line to your .vimrc:
+    let g:ackprg = 'ag --nogroup --nocolor --column'
+endif
+
+" Use ag for search
+if executable('ag')
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+    let g:unite_source_grep_recursive_opt = ''
+    let g:unite_source_grep_search_word_highlight = 1
+endif
+
+" Silver Searcher aka ag -- it needs to be in the path
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+    set grepformat=%f:%l:%c:%m
+endif
+
+let g:unite_source_buffer_time_format = '(%d-%m-%Y %H:%M:%S) '
+let g:unite_source_file_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
+let g:unite_source_directory_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
+let g:unite_enable_start_insert=1
+let g:unite_source_rec_max_cache_files=5000
 let g:unite_source_history_yank_enable = 1
+let g:unite_source_file_mru_long_limit = 100
+let g:unite_winheight = 10
+let g:unite_update_time = 200
+let g:unite_split_rule = 'botright'
+let g:unite_prompt = '>>> '
+
+nnoremap ,y :<C-u>Unite history/yank<CR>
+nnoremap <silent><Leader>; :Unite -silent -toggle grep:%::FIXME\|TODO\|NOTE\|XXX\|COMBAK\|@todo<CR>
 
 
 imap <M-d> <ESC>ldiwi
@@ -913,3 +937,18 @@ if has('python3')
 else
     autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 endif
+
+" let g:pymode_syntax_indent_errors = 0
+
+" fold with syntax
+set foldmethod=syntax
+set foldlevelstart=1
+
+let javaScript_fold=1         " JavaScript
+let perl_fold=1               " Perl
+let php_folding=1             " PHP
+let r_syntax_folding=1        " R
+let ruby_fold=1               " Ruby
+let sh_fold_enabled=1         " sh
+let vimsyn_folding='af'       " Vim script
+let xml_syntax_folding=1      " XML
