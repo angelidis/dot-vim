@@ -260,8 +260,8 @@ endif
 "   ,t : OS Terminal
 "   ,d : OS File Explorer (from directory)
 
-nnoremap ,f    :<C-u>Unite file<CR>
 nmap <silent> <unique> <Leader>fe :NERDTreeToggle<CR>
+nnoremap ,f    :<C-u>Unite file<CR>
 nnoremap <C-o> :<C-u>Unite -no-start-insert file<CR>
 nnoremap ,b    :<C-u>Unite buffer<CR>
 nnoremap ,r    :<C-u>Unite file_rec/async<CR>
@@ -397,16 +397,10 @@ noremap <silent> ,mj <C-W>J
 "	Maps with Function Keys {{{1
 "=======================================
 
-" <F1>: Help
-" nmap <F1> [unite]h
-
 " <F2>: Open Vimfiler
 
 " <F3>: Gundo
 nnoremap <F3> :UndotreeToggle<cr>
-
-" <F4>: Save session
-nnoremap <F4> :<C-u>UniteSessionSave
 
 " <C-F4>
 map <C-F4>  :bdelete<CR>
@@ -885,6 +879,40 @@ endfunction
 
 "==========================================================}}}1
 
+" Silver Searcher aka ag -- it needs to be in the path
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+    set grepformat=%f:%l:%c:%m
+endif
+
+imap <M-d> <ESC>ldiwi
+imap <M-d> <ESC>ldwa
+
+if has('python3')
+    autocmd FileType python setlocal omnifunc=python3complete#Complete
+else
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+endif
+
+" let g:pymode_syntax_indent_errors = 0
+
+" fold with syntax
+set foldmethod=syntax
+set foldlevelstart=1
+
+let javaScript_fold=1         " JavaScript
+let perl_fold=1               " Perl
+let php_folding=1             " PHP
+let r_syntax_folding=1        " R
+let ruby_fold=1               " Ruby
+let sh_fold_enabled=1         " sh
+let vimsyn_folding='af'       " Vim script
+let xml_syntax_folding=1      " XML
+
+" Unite Stuff
+" <F4>: Save session
+nnoremap <F4> :<C-u>UniteSessionSave
+
 " Unite Configuration
 "Plugin:    Unite
 if has("win16") || has("win32") || has("win64")
@@ -918,12 +946,6 @@ elseif executable('ack-grep')
 endif
 
 
-" Silver Searcher aka ag -- it needs to be in the path
-if executable('ag')
-    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
-    set grepformat=%f:%l:%c:%m
-endif
-
 let g:unite_source_buffer_time_format = '(%d-%m-%Y %H:%M:%S) '
 let g:unite_source_file_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
 let g:unite_source_directory_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
@@ -940,27 +962,7 @@ let g:unite_prompt = '>>> '
 nnoremap ,y :<C-u>Unite history/yank<CR>
 nnoremap <silent><Leader>; :Unite -silent -toggle grep:%::FIXME\|TODO\|NOTE\|XXX\|COMBAK\|@todo<CR>
 
+" <F1>: Help
+" nmap <F1> [unite]h
 
-imap <M-d> <ESC>ldiwi
-imap <M-d> <ESC>ldwa
 
-if has('python3')
-    autocmd FileType python setlocal omnifunc=python3complete#Complete
-else
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-endif
-
-" let g:pymode_syntax_indent_errors = 0
-
-" fold with syntax
-set foldmethod=syntax
-set foldlevelstart=1
-
-let javaScript_fold=1         " JavaScript
-let perl_fold=1               " Perl
-let php_folding=1             " PHP
-let r_syntax_folding=1        " R
-let ruby_fold=1               " Ruby
-let sh_fold_enabled=1         " sh
-let vimsyn_folding='af'       " Vim script
-let xml_syntax_folding=1      " XML
