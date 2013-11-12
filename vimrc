@@ -13,7 +13,8 @@ if has("win16") || has("win32") || has("win64")
     " silent! execute pathogen#infect('~/vimfiles/stuff/{}', '~/vimfiles/bundle/{}')
 else
     let $MYVIMRC='~/.vim/vimrc'
-    silent! execute pathogen#infect("~/.vim/stuff/{}")
+    " silent! execute pathogen#infect("~/.vim/stuff/{}")
+    silent! execute pathogen#infect('~/.vim/mystuff/{}', '~/.vim/bundle/{}')
 endif
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
@@ -895,7 +896,7 @@ endif
 if has("unix")
     let g:unite_data_directory='~/.vim/.cache/unite'
     let g:vimfiler_data_directory='~/.vim/.cache/vimfiler'
-    " let g:unite_source_bookmark_directory 
+    " let g:unite_source_bookmark_directory
     " You can use Ag with ack.vim by adding the following line to your .vimrc:
     let g:ackprg = 'ag --nogroup --nocolor --column'
 endif
